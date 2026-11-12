@@ -92,7 +92,6 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
     { id: 'family', label: 'ಕುಟುಂಬ (Family)', icon: Users },
     { id: 'assets', label: 'ಆಸ್ತಿ (Assets)', icon: Landmark },
     { id: 'horoscope', label: 'ಜಾತಕ (Horoscope)', icon: Moon },
-    { id: 'preferences', label: 'ನಿರೀಕ್ಷೆಗಳು (Preferences)', icon: HeartHandshake },
     { id: 'contact', label: 'ಸಂಪರ್ಕ (Contact)', icon: Phone },
   ];
 
@@ -472,31 +471,6 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
                   type="text"
                   value={formData.horoscope.padaKn}
                   onChange={(e) => handleHoroscopeChange('padaKn', e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* PREFERENCES TAB */}
-          {activeTab === 'preferences' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>ವಯಸ್ಸು (Preferred Age):</label>
-                <input
-                  type="text"
-                  value={formData.preferences.ageRangeKn}
-                  onChange={(e) => handlePreferencesChange('ageRangeKn', e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>ವಿದ್ಯಾರ್ಹತೆ (Education):</label>
-                <input
-                  type="text"
-                  value={formData.preferences.educationKn}
-                  onChange={(e) => handlePreferencesChange('educationKn', e.target.value)}
                   className={inputClass}
                 />
               </div>

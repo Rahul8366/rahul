@@ -40,7 +40,6 @@ export default function Navbar({
     { id: 'family', labelKn: 'ಕುಟುಂಬ', labelEn: 'Family', labelHi: 'परिवार' },
     { id: 'assets', labelKn: 'ಆಸ್ತಿ', labelEn: 'Assets', labelHi: 'संपत्ति' },
     { id: 'horoscope', labelKn: 'ಜಾತಕ', labelEn: 'Horoscope', labelHi: 'कुंडली' },
-    { id: 'preferences', labelKn: 'ಜೀವನ ಸಂಗಾತಿ', labelEn: 'Preferences', labelHi: 'अपेक्षाएँ' },
     { id: 'contact', labelKn: 'ಸಂಪರ್ಕ', labelEn: 'Contact', labelHi: 'संपर्क' },
   ];
 

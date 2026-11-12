@@ -9,7 +9,6 @@ import FamilySection from './components/FamilySection';
 import AssetsSection from './components/AssetsSection';
 import HoroscopeSection from './components/HoroscopeSection';
 import AboutMeSection from './components/AboutMeSection';
-import PartnerPreferencesSection from './components/PartnerPreferencesSection';
 import ContactSection from './components/ContactSection';
 import PhotoEditorModal from './components/PhotoEditorModal';
 import ProfileEditModal from './components/ProfileEditModal';
@@ -105,7 +104,6 @@ export default function App() {
       'assets',
       'horoscope',
       'aboutme',
-      'preferences',
       'contact',
     ];
 
@@ -217,12 +215,6 @@ export default function App() {
         />
 
         <AboutMeSection
-          profile={profile}
-          language={language}
-          isLightMode={isLightMode}
-        />
-
-        <PartnerPreferencesSection
           profile={profile}
           language={language}
           isLightMode={isLightMode}
