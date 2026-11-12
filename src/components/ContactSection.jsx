@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, MapPin, MessageSquare, Copy, Check, Send } from 'lucide-react';
+import { visitorService } from '../services/visitorService';
 
 export default function ContactSection({ profile, language, isLightMode }) {
   const { contact, personal } = profile;
@@ -251,6 +252,7 @@ export default function ContactSection({ profile, language, isLightMode }) {
                     href={`https://wa.me/919108080161?text=${getWhatsappMsg()}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => visitorService.logAction('CLICK_WHATSAPP')}
                     className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />

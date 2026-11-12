@@ -14,7 +14,11 @@ import ContactSection from './components/ContactSection';
 import PhotoEditorModal from './components/PhotoEditorModal';
 import ProfileEditModal from './components/ProfileEditModal';
 import PdfBiodataModal from './components/PdfBiodataModal';
-import { ArrowUp, Share2, FileDown } from 'lucide-react';
+import VisitorGateModal from './components/VisitorGateModal';
+import AdminDashboardModal from './components/AdminDashboardModal';
+import LegalModal from './components/LegalModal';
+import { visitorService } from './services/visitorService';
+import { ArrowUp, Share2, FileDown, Shield, Lock } from 'lucide-react';
 
 export default function App() {
   // Always initialize with Rahul's authentic official data on every page load/refresh
@@ -45,6 +49,37 @@ export default function App() {
   const [isPhotoEditorOpen, setIsPhotoEditorOpen] = useState(false);
   const [isProfileEditOpen, setIsProfileEditOpen] = useState(false);
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+  const [isVisitorGateOpen, setIsVisitorGateOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isLegalOpen, setIsLegalOpen] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
+
+  // Check URL query parameters and visitor session on mount
+  useEffect(() => {
+    // If ?admin or #admin in URL, open Admin Dashboard
+    if (window.location.search.includes('admin') || window.location.hash.includes('admin')) {
+      setIsAdminOpen(true);
+    } else {
+      // Prompt visitor if no session has been registered yet
+      const session = visitorService.getCurrentSession();
+      if (!session) {
+        const timer = setTimeout(() => {
+          setIsVisitorGateOpen(true);
+        }, 1200);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
+  const handleOpenPdf = () => {
+    visitorService.logAction('DOWNLOAD_PDF');
+    setIsPdfModalOpen(true);
+  };
+
+  const handleOpenLegal = (tab = 'privacy') => {
+    setLegalTab(tab);
+    setIsLegalOpen(true);
+  };
 
   // Live session edit: Updates the current screen & PDF download dynamically
   const handleSaveProfile = (updatedProfile) => {
@@ -136,7 +171,8 @@ export default function App() {
         isLightMode={isLightMode}
         setIsLightMode={setIsLightMode}
         onOpenEditProfile={() => setIsProfileEditOpen(true)}
-        onOpenPdfModal={() => setIsPdfModalOpen(true)}
+        onOpenPdfModal={handleOpenPdf}
+        onOpenAdmin={() => setIsAdminOpen(true)}
         onShare={handleShare}
       />
 
@@ -147,7 +183,7 @@ export default function App() {
           language={language}
           isLightMode={isLightMode}
           onOpenPhotoEditor={() => setIsPhotoEditorOpen(true)}
-          onOpenPdfModal={() => setIsPdfModalOpen(true)}
+          onOpenPdfModal={handleOpenPdf}
         />
 
         <PersonalDetailsSection
@@ -238,9 +274,9 @@ export default function App() {
               : '॥ ಶ್ರೀ ಗುರು ಬಸವೇಶ್ವರ ಪ್ರಸನ್ನ • ಸರ್ವೇ ಜನಾಃ ಸುಖಿನೋ ಭವಂತು ॥'}
           </p>
 
-          <div className="flex items-center justify-center gap-6 my-6 text-xs font-semibold">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 my-6 text-xs font-semibold">
             <button
-              onClick={() => setIsPdfModalOpen(true)}
+              onClick={handleOpenPdf}
               className={`flex items-center gap-1 transition-colors cursor-pointer ${
                 isLightMode ? 'text-[#855b0a] hover:text-[#0b172a]' : 'hover:text-[#f6e8b1]'
               }`}
@@ -260,6 +296,38 @@ export default function App() {
             </button>
             <span>•</span>
             <button
+              onClick={() => handleOpenLegal('privacy')}
+              className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                isLightMode ? 'text-[#855b0a] hover:text-[#0b172a]' : 'hover:text-[#f6e8b1]'
+              }`}
+            >
+              <Shield className="w-3.5 h-3.5 text-[#d4af37]" />
+              ಖಾಸಗಿತನ ನೀತಿ (Privacy Policy)
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => handleOpenLegal('terms')}
+              className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                isLightMode ? 'text-[#855b0a] hover:text-[#0b172a]' : 'hover:text-[#f6e8b1]'
+              }`}
+            >
+              ನಿಯಮಗಳು (Terms)
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => setIsAdminOpen(true)}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
+                isLightMode
+                  ? 'border-[#c59b27]/40 bg-white text-[#855b0a] hover:bg-amber-50'
+                  : 'border-[#d4af37]/40 bg-white/5 text-[#f6e8b1] hover:bg-white/10'
+              }`}
+              title="Admin Visitor Analytics"
+            >
+              <Lock className="w-3 h-3 text-[#d4af37]" />
+              <span>ಅಡ್ಮಿನ್ (Admin)</span>
+            </button>
+            <span>•</span>
+            <button
               onClick={scrollToTop}
               className={`flex items-center gap-1 transition-colors cursor-pointer ${
                 isLightMode ? 'text-[#855b0a] hover:text-[#0b172a]' : 'hover:text-[#f6e8b1]'
@@ -271,7 +339,7 @@ export default function App() {
           </div>
 
           <p className="text-[11px] text-slate-500 mt-4">
-            Official Marriage Profile of Rahul Suresh Balabatti. Created with 3D Visual Experience.
+            Official Marriage Profile of Rahul Suresh Balabatti. Protected by Privacy & Authenticity Guidelines.
           </p>
         </div>
       </footer>
@@ -313,6 +381,31 @@ export default function App() {
         onClose={() => setIsPdfModalOpen(false)}
         profile={profile}
         isLightMode={isLightMode}
+      />
+
+      {/* Visitor Identification & Email Gate */}
+      <VisitorGateModal
+        isOpen={isVisitorGateOpen}
+        onClose={() => setIsVisitorGateOpen(false)}
+        onOpenLegal={handleOpenLegal}
+        isLightMode={isLightMode}
+        language={language}
+      />
+
+      {/* Secret Admin Analytics Portal */}
+      <AdminDashboardModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        isLightMode={isLightMode}
+      />
+
+      {/* Privacy Policy & Terms Modal */}
+      <LegalModal
+        isOpen={isLegalOpen}
+        onClose={() => setIsLegalOpen(false)}
+        initialTab={legalTab}
+        isLightMode={isLightMode}
+        language={language}
       />
     </div>
   );

@@ -7,6 +7,7 @@ import {
   Sun,
   Moon,
   Share2,
+  Lock,
 } from 'lucide-react';
 
 export default function Navbar({
@@ -17,6 +18,7 @@ export default function Navbar({
   setIsLightMode,
   onOpenEditProfile,
   onOpenPdfModal,
+  onOpenAdmin,
   onShare,
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -279,9 +281,20 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onShare();
               }}
+              title="Share Link"
               className="px-4 py-2.5 rounded-xl border border-[#d4af37]/40 text-xs font-semibold text-[#855b0a] flex items-center justify-center gap-1.5"
             >
               <Share2 className="w-4 h-4 text-[#d4af37]" />
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenAdmin) onOpenAdmin();
+              }}
+              title="Admin Visitor Analytics"
+              className="px-3.5 py-2.5 rounded-xl border border-[#d4af37]/40 text-xs font-semibold text-[#855b0a] flex items-center justify-center gap-1.5"
+            >
+              <Lock className="w-4 h-4 text-[#d4af37]" />
             </button>
           </div>
         </div>
