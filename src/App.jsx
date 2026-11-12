@@ -17,8 +17,13 @@ import PdfBiodataModal from './components/PdfBiodataModal';
 import { ArrowUp, Share2, FileDown } from 'lucide-react';
 
 export default function App() {
-  // Always load Rahul's official authentic details on page load/refresh
-  const [profile, setProfile] = useState(initialProfileData);
+  // Always initialize with Rahul's authentic official data on every page load/refresh
+  const [profile, setProfile] = useState(() => {
+    try {
+      localStorage.removeItem('rahul_matrimonial_profile_v1');
+    } catch (e) {}
+    return JSON.parse(JSON.stringify(initialProfileData));
+  });
 
   // 3 Languages: 'kn' (Kannada), 'en' (English), 'hi' (Hindi)
   const [language, setLanguage] = useState('kn');
@@ -30,12 +35,12 @@ export default function App() {
   const [isProfileEditOpen, setIsProfileEditOpen] = useState(false);
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
 
-  // Allow in-session edits for live preview & custom template downloads
+  // Live session edit: Updates the current screen & PDF download dynamically
   const handleSaveProfile = (updatedProfile) => {
     setProfile(updatedProfile);
   };
 
-  // Allow in-session photo zoom/crop adjustments
+  // Live session photo adjust: Updates current screen & PDF download dynamically
   const handleSavePhoto = (photoSettings) => {
     setProfile((prev) => ({
       ...prev,
@@ -80,8 +85,8 @@ export default function App() {
   // Share profile website
   const handleShare = async () => {
     const shareData = {
-      title: `${profile.personal.fullNameKn} (${profile.personal.fullNameEn}) - Matrimonial Biodata`,
-      text: `ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ - Matrimonial Profile of Rahul Suresh Balabatti (MCA, Tech Support Engineer).`,
+      title: `${profile.personal.fullNameKn} (${profile.personal.fullNameEn}) - Marriage Profile`,
+      text: `ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ - Marriage Profile of Rahul Suresh Balabatti (MCA, Tech Support Engineer).`,
       url: window.location.href,
     };
 
@@ -132,10 +137,6 @@ export default function App() {
           isLightMode={isLightMode}
           onOpenPhotoEditor={() => setIsPhotoEditorOpen(true)}
           onOpenPdfModal={() => setIsPdfModalOpen(true)}
-          onOpenContact={() => {
-            const el = document.getElementById('contact');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
         />
 
         <PersonalDetailsSection
@@ -259,7 +260,7 @@ export default function App() {
           </div>
 
           <p className="text-[11px] text-slate-500 mt-4">
-            Official Matrimonial Profile of Rahul Suresh Balabatti. Created with 3D Visual Experience.
+            Official Marriage Profile of Rahul Suresh Balabatti. Created with 3D Visual Experience.
           </p>
         </div>
       </footer>

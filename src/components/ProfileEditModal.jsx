@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { X, Check, RefreshCw, Edit, User, Briefcase, Users, Landmark, Moon, HeartHandshake, Phone } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Check, RefreshCw, Edit, User, GraduationCap, Briefcase, Users, Landmark, Moon, HeartHandshake, Phone } from 'lucide-react';
 import { initialProfileData } from '../data/profileData';
 
 export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfile }) {
   const [formData, setFormData] = useState(JSON.parse(JSON.stringify(profile)));
   const [activeTab, setActiveTab] = useState('personal');
+
+  // Synchronize with current profile data whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(JSON.parse(JSON.stringify(profile)));
+    }
+  }, [isOpen, profile]);
 
   if (!isOpen) return null;
 
@@ -20,6 +27,14 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
       ...prev,
       profession: { ...prev.profession, [field]: value },
     }));
+  };
+
+  const handleEducationChange = (index, field, value) => {
+    setFormData((prev) => {
+      const newEdu = [...prev.education];
+      newEdu[index] = { ...newEdu[index], [field]: value };
+      return { ...prev, education: newEdu };
+    });
   };
 
   const handleFamilyChange = (field, value) => {
@@ -63,13 +78,15 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
   };
 
   const handleResetToDefault = () => {
-    if (window.confirm('ರಾಹುಲ್ ಅವರ ಮೂಲ ಅಧಿಕೃತ ವಿವರಗಳಿಗೆ ಮರುಹೊಂದಿಸಲು ಬಯಸುವಿರಾ? (Reset to official details?)')) {
+    if (window.confirm('ರಾಹುಲ್ ಅವರ ಅಧಿಕೃತ ವಿವರಗಳಿಗೆ ಮರುಹೊಂದಿಸಲು ಬಯಸುವಿರಾ? (Reset to official details?)')) {
       setFormData(JSON.parse(JSON.stringify(initialProfileData)));
+      onSaveProfile(JSON.parse(JSON.stringify(initialProfileData)));
     }
   };
 
   const tabs = [
     { id: 'personal', label: 'ವೈಯಕ್ತಿಕ (Personal)', icon: User },
+    { id: 'education', label: 'ಶಿಕ್ಷಣ (Education)', icon: GraduationCap },
     { id: 'profession', label: 'ಉದ್ಯೋಗ (Career)', icon: Briefcase },
     { id: 'family', label: 'ಕುಟುಂಬ (Family)', icon: Users },
     { id: 'assets', label: 'ಆಸ್ತಿ (Assets)', icon: Landmark },
@@ -80,17 +97,17 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
-      <div className="relative w-full max-w-4xl bg-[#08172c] border border-[#d4af37]/40 rounded-3xl p-6 sm:p-8 shadow-2xl text-slate-100 max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-4xl bg-[#08172c] border border-[#d4af37]/40 rounded-3xl p-5 sm:p-8 shadow-2xl text-slate-100 max-h-[92vh] flex flex-col">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[#d4af37]/20 shrink-0">
           <div>
             <h3 className="text-xl sm:text-2xl font-cinzel font-bold text-[#f6e8b1] flex items-center gap-2">
               <Edit className="w-6 h-6 text-[#d4af37]" />
-              ಮಾಹಿತಿ ಸಂಪಾದನೆ • Edit Profile
+              ಮಾಹಿತಿ ಸಂಪಾದನೆ • Edit & Test Profile
             </h3>
             <p className="text-xs text-slate-400 mt-1">
-              Update details in Kannada, English, or Hindi.
+              Changes apply immediately to your screen & PDF download. Refreshing resets back to Rahul's original details.
             </p>
           </div>
           <button
@@ -203,7 +220,7 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
 
               <div className="sm:col-span-2">
                 <label className="text-xs text-slate-300 font-medium block mb-1">
-                  ಮೂಲ ಸ್ಥಳ (Native Place):
+                  ಮೂಲ ಸ್ಥಳ (Native Place / Address):
                 </label>
                 <input
                   type="text"
@@ -212,6 +229,51 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
                   className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
                 />
               </div>
+
+              <div className="sm:col-span-2">
+                <label className="text-xs text-slate-300 font-medium block mb-1">
+                  ಪ್ರಸ್ತುತ ಸ್ಥಳ (Current Location):
+                </label>
+                <input
+                  type="text"
+                  value={formData.personal.currentLocationKn}
+                  onChange={(e) => handlePersonalChange('currentLocationKn', e.target.value)}
+                  className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* EDUCATION TAB */}
+          {activeTab === 'education' && (
+            <div className="space-y-4">
+              {formData.education.map((edu, idx) => (
+                <div key={idx} className="p-4 bg-[#050f1d] rounded-2xl border border-white/10 space-y-3">
+                  <span className="text-xs font-bold text-[#d4af37] uppercase">
+                    Degree {idx + 1}
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-slate-400 block mb-1">Degree Title (Kannada):</label>
+                      <input
+                        type="text"
+                        value={edu.degreeKn}
+                        onChange={(e) => handleEducationChange(idx, 'degreeKn', e.target.value)}
+                        className="w-full bg-[#08172c] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-slate-400 block mb-1">Degree Title (English):</label>
+                      <input
+                        type="text"
+                        value={edu.degreeEn}
+                        onChange={(e) => handleEducationChange(idx, 'degreeEn', e.target.value)}
+                        className="w-full bg-[#08172c] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
@@ -309,6 +371,18 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
 
               <div>
                 <label className="text-xs text-slate-300 font-medium block mb-1">
+                  ಕುಟುಂಬದ ಪ್ರಕಾರ (Family Type):
+                </label>
+                <input
+                  type="text"
+                  value={formData.family.familyTypeKn}
+                  onChange={(e) => handleFamilyChange('familyTypeKn', e.target.value)}
+                  className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-slate-300 font-medium block mb-1">
                   ಮನೆ ವಿವರ (House):
                 </label>
                 <input
@@ -376,6 +450,30 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
                   className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
                 />
               </div>
+
+              <div>
+                <label className="text-xs text-slate-300 font-medium block mb-1">
+                  ಗಣ (Gana):
+                </label>
+                <input
+                  type="text"
+                  value={formData.horoscope.ganaKn}
+                  onChange={(e) => handleHoroscopeChange('ganaKn', e.target.value)}
+                  className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-slate-300 font-medium block mb-1">
+                  ಪಾದ (Pada):
+                </label>
+                <input
+                  type="text"
+                  value={formData.horoscope.padaKn}
+                  onChange={(e) => handleHoroscopeChange('padaKn', e.target.value)}
+                  className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-[#d4af37] outline-none"
+                />
+              </div>
             </div>
           )}
 
@@ -408,7 +506,7 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
             </div>
           )}
 
-          {/* CONTACT TAB - Only single mobile/whatsapp */}
+          {/* CONTACT TAB */}
           {activeTab === 'contact' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -424,9 +522,6 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
                   }}
                   className="w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-[#f6e8b1] focus:border-[#d4af37] outline-none font-mono"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
-                  Only one primary number used across the website and direct WhatsApp redirection.
-                </p>
               </div>
 
               <div className="sm:col-span-2">
@@ -467,7 +562,7 @@ export default function ProfileEditModal({ isOpen, onClose, profile, onSaveProfi
               className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] font-bold text-xs shadow-lg shadow-amber-950/40 hover:brightness-110 flex items-center gap-1.5 cursor-pointer"
             >
               <Check className="w-4 h-4" />
-              ಉಳಿಸಿ (Save Changes)
+              ಉಳಿಸಿ (Save & Apply)
             </button>
           </div>
         </div>

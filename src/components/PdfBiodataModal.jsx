@@ -55,17 +55,133 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
     window.print();
   };
 
-  // Language content helpers
+  // Dynamic getters based on selected language & current profile state
   const getFullName = () => {
-    if (selectedLang === 'hi') return personal.fullNameHi;
+    if (selectedLang === 'hi') return personal.fullNameHi || personal.fullNameEn;
     if (selectedLang === 'en') return personal.fullNameEn.toUpperCase();
-    return personal.fullNameKn;
+    return personal.fullNameKn || personal.fullNameEn;
   };
 
   const getTitle = () => {
-    if (selectedLang === 'hi') return personal.titleHi;
+    if (selectedLang === 'hi') return personal.titleHi || 'विवाह परिचय पत्र';
     if (selectedLang === 'en') return 'MARRIAGE PROFILE';
-    return personal.titleKn;
+    return personal.titleKn || 'ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ';
+  };
+
+  const getAge = () => {
+    if (selectedLang === 'hi') return personal.ageHi || personal.ageEn || personal.ageKn;
+    if (selectedLang === 'en') return personal.ageEn || personal.ageKn;
+    return personal.ageKn || personal.ageEn;
+  };
+
+  const getHeight = () => {
+    if (selectedLang === 'hi') return personal.heightHi || personal.heightEn || personal.heightKn;
+    if (selectedLang === 'en') return personal.heightEn || personal.heightKn;
+    return personal.heightKn || personal.heightEn;
+  };
+
+  const getLanguages = () => {
+    if (selectedLang === 'hi') return personal.languagesHi || personal.languagesEn || personal.languagesKn;
+    if (selectedLang === 'en') return personal.languagesEn || personal.languagesKn;
+    return personal.languagesKn || personal.languagesEn;
+  };
+
+  const getNativePlace = () => {
+    if (selectedLang === 'hi') return personal.nativePlaceHi || personal.nativePlaceEn || personal.nativePlaceKn;
+    if (selectedLang === 'en') return personal.nativePlaceEn || personal.nativePlaceKn;
+    return personal.nativePlaceKn || personal.nativePlaceEn;
+  };
+
+  const getLocation = () => {
+    if (selectedLang === 'hi') return personal.currentLocationHi || personal.currentLocationEn || personal.currentLocationKn;
+    if (selectedLang === 'en') return personal.currentLocationEn || personal.currentLocationKn;
+    return personal.currentLocationKn || personal.currentLocationEn;
+  };
+
+  const getRole = () => {
+    if (selectedLang === 'hi') return profession.roleHi || profession.roleEn || profession.roleKn;
+    if (selectedLang === 'en') return profession.roleEn || profession.roleKn;
+    return profession.roleKn || profession.roleEn;
+  };
+
+  const getIncome = () => {
+    if (selectedLang === 'hi') return profession.annualIncomeHi || profession.annualIncomeEn || profession.annualIncomeKn;
+    if (selectedLang === 'en') return profession.annualIncomeEn || profession.annualIncomeKn;
+    return profession.annualIncomeKn || profession.annualIncomeEn;
+  };
+
+  const getFather = () => {
+    if (selectedLang === 'hi') return family.fatherNameHi || family.fatherNameEn || family.fatherNameKn;
+    if (selectedLang === 'en') return family.fatherNameEn || family.fatherNameKn;
+    return family.fatherNameKn || family.fatherNameEn;
+  };
+
+  const getMother = () => {
+    if (selectedLang === 'hi') return family.motherNameHi || family.motherNameEn || family.motherNameKn;
+    if (selectedLang === 'en') return family.motherNameEn || family.motherNameKn;
+    return family.motherNameKn || family.motherNameEn;
+  };
+
+  const getBrother = () => {
+    if (selectedLang === 'hi') return family.brotherNameHi || family.brotherNameEn || family.brotherNameKn;
+    if (selectedLang === 'en') return family.brotherNameEn || family.brotherNameKn;
+    return family.brotherNameKn || family.brotherNameEn;
+  };
+
+  const getFamilyType = () => {
+    if (selectedLang === 'hi') return family.familyTypeHi || family.familyTypeEn || family.familyTypeKn;
+    if (selectedLang === 'en') return family.familyTypeEn || family.familyTypeKn;
+    return family.familyTypeKn || family.familyTypeEn;
+  };
+
+  const getHouse = () => {
+    if (selectedLang === 'hi') return family.houseHi || family.houseEn || family.houseKn;
+    if (selectedLang === 'en') return family.houseEn || family.houseKn;
+    return family.houseKn || family.houseEn;
+  };
+
+  const getRashi = () => {
+    if (selectedLang === 'hi') return horoscope.rashiHi || horoscope.rashiEn || horoscope.rashiKn;
+    if (selectedLang === 'en') return horoscope.rashiEn || horoscope.rashiKn;
+    return horoscope.rashiKn || horoscope.rashiEn;
+  };
+
+  const getNakshatra = () => {
+    if (selectedLang === 'hi') return horoscope.nakshatraHi || horoscope.nakshatraEn || horoscope.nakshatraKn;
+    if (selectedLang === 'en') return horoscope.nakshatraEn || horoscope.nakshatraKn;
+    return horoscope.nakshatraKn || horoscope.nakshatraEn;
+  };
+
+  const getGana = () => {
+    if (selectedLang === 'hi') return horoscope.ganaHi || horoscope.ganaEn || horoscope.ganaKn;
+    if (selectedLang === 'en') return horoscope.ganaEn || horoscope.ganaKn;
+    return horoscope.ganaKn || horoscope.ganaEn;
+  };
+
+  const getPada = () => {
+    if (selectedLang === 'hi') return horoscope.padaHi || horoscope.padaEn || horoscope.padaKn;
+    if (selectedLang === 'en') return horoscope.padaEn || horoscope.padaKn;
+    return horoscope.padaKn || horoscope.padaEn;
+  };
+
+  const getLand = () => {
+    if (selectedLang === 'hi') return assets.agriculturalLandHi || assets.agriculturalLandEn || assets.agriculturalLandKn;
+    if (selectedLang === 'en') return assets.agriculturalLandEn || assets.agriculturalLandKn;
+    return assets.agriculturalLandKn || assets.agriculturalLandEn;
+  };
+
+  const getCommunity = () => {
+    if (selectedLang === 'hi') return assets.communityHi || assets.communityEn || assets.communityKn;
+    if (selectedLang === 'en') return assets.communityEn || assets.communityKn;
+    return assets.communityKn || assets.communityEn;
+  };
+
+  const getEduList = () => {
+    return education.map((edu) => {
+      if (selectedLang === 'hi') return edu.degreeHi || edu.degreeEn || edu.degreeKn;
+      if (selectedLang === 'en') return edu.degreeEn || edu.degreeKn;
+      return edu.degreeKn || edu.degreeEn;
+    });
   };
 
   return (
@@ -80,7 +196,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
               <span>ವಿವಾಹ ಬಯೋಡೇಟಾ ಡೌನ್‌ಲೋಡ್ • Marriage Profile</span>
             </h3>
             <p className="text-[11px] sm:text-xs text-slate-400">
-              Download or print in Kannada, English, or Hindi. Ready for WhatsApp sharing.
+              Shows your live edited template. Ready to download or print.
             </p>
           </div>
 
@@ -193,12 +309,12 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                     {selectedLang === 'hi' ? 'संपर्क / व्हाट्सएप' : selectedLang === 'en' ? 'Contact / WhatsApp' : 'ಸಂಪರ್ಕ / WhatsApp'}
                   </div>
                   <div className="text-sm font-bold text-emerald-800 font-mono mt-0.5">
-                    +91 91080 80161
+                    {contact.phonePrimary}
                   </div>
                 </div>
               </div>
 
-              {/* RIGHT: Royal Ivory Information Cards Grid */}
+              {/* RIGHT: Royal Ivory Information Cards Grid (100% Dynamic) */}
               <div className="col-span-8 flex flex-col gap-3.5">
                 
                 {/* Row 1: Personal Details & Education */}
@@ -225,44 +341,42 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'आयु' : selectedLang === 'en' ? 'Age' : 'ವಯಸ್ಸು'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? personal.ageHi : selectedLang === 'en' ? personal.ageEn : personal.ageKn}
-                        </span>
+                        <span className="font-bold">: {getAge()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'ऊँचाई' : selectedLang === 'en' ? 'Height' : 'ಎತ್ತರ'}
                         </span>
-                        <span className="font-bold">: 5 ft 6 in (168 cm)</span>
+                        <span className="font-bold">: {getHeight()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'भाषाएँ' : selectedLang === 'en' ? 'Languages' : 'ಭಾಷೆಗಳು'}
                         </span>
                         <span className="font-bold truncate max-w-[140px] text-right">
-                          : {selectedLang === 'hi' ? personal.languagesHi : selectedLang === 'en' ? personal.languagesEn : personal.languagesKn}
+                          : {getLanguages()}
                         </span>
                       </div>
                       <div className="flex justify-between items-start">
                         <span className="text-slate-600 font-medium shrink-0">
                           {selectedLang === 'hi' ? 'मूल स्थान' : selectedLang === 'en' ? 'Native Place' : 'ಮೂಲ ಸ್ಥಳ'}
                         </span>
-                        <span className="font-bold text-right text-[10px] pl-1 leading-tight">
-                          : {selectedLang === 'hi' ? 'रुद्रवाड़ी, आळंद, कलबुर्गी' : selectedLang === 'en' ? 'Rudrawadi, Aland, Kalaburagi' : 'ರುದ್ರವಾಡಿ, ಆಳಂದ, ಕಲಬುರಗಿ'}
+                        <span className="font-bold text-right text-[10px] pl-1 leading-tight max-w-[150px]">
+                          : {getNativePlace()}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'स्थान' : selectedLang === 'en' ? 'Location' : 'ಉದ್ಯೋಗ ಸ್ಥಳ'}
                         </span>
-                        <span className="font-bold">: {selectedLang === 'hi' ? 'बेंगलुरु' : selectedLang === 'en' ? 'Bengaluru' : 'ಬೆಂಗಳೂರು'}</span>
+                        <span className="font-bold">: {getLocation()}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Card 2: Education & Career Stack */}
                   <div className="flex flex-col gap-3">
-                    {/* Education */}
+                    {/* Education (Dynamic Array) */}
                     <div className="bg-[#f6f2e9] text-[#0c1a2e] p-3.5 rounded-2xl border border-[#d4af37]/40 shadow-md flex-1">
                       <div className="flex items-center gap-2 pb-1.5 mb-2 border-b border-[#0c1a2e]/10">
                         <div className="w-6 h-6 rounded-full bg-[#0c1a2e] text-[#f6e8b1] flex items-center justify-center text-xs">
@@ -273,20 +387,17 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                         </h4>
                       </div>
                       <div className="text-[11px] space-y-1">
-                        <div>
-                          <span className="font-bold text-[#0c1a2e]">
-                            • {selectedLang === 'hi' ? 'एमसीए – कर्नाटक वि.वि. धारवाड़' : selectedLang === 'en' ? 'MCA – Karnataka University, Dharwad' : 'ಎಂ.ಸಿ.ಎ. – ಕರ್ನಾಟಕ ವಿ.ವಿ. ಧಾರವಾಡ'}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="font-bold text-[#0c1a2e]">
-                            • {selectedLang === 'hi' ? 'बीसीए – गुलबर्गा विश्वविद्यालय' : selectedLang === 'en' ? 'BCA – Gulbarga University' : 'ಬಿ.ಸಿ.ಎ. – ಗುಲ್ಬರ್ಗಾ ವಿಶ್ವವಿದ್ಯಾಲಯ'}
-                          </span>
-                        </div>
+                        {getEduList().map((degreeText, i) => (
+                          <div key={i}>
+                            <span className="font-bold text-[#0c1a2e]">
+                              • {degreeText}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Profession */}
+                    {/* Profession (Dynamic) */}
                     <div className="bg-[#f6f2e9] text-[#0c1a2e] p-3.5 rounded-2xl border border-[#d4af37]/40 shadow-md flex-1">
                       <div className="flex items-center gap-2 pb-1.5 mb-2 border-b border-[#0c1a2e]/10">
                         <div className="w-6 h-6 rounded-full bg-[#0c1a2e] text-[#f6e8b1] flex items-center justify-center text-xs">
@@ -298,10 +409,10 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                       </div>
                       <div className="text-[11px] space-y-1">
                         <div className="font-bold">
-                          • {selectedLang === 'hi' ? profession.roleHi : selectedLang === 'en' ? profession.roleEn : profession.roleKn}
+                          • {getRole()}
                         </div>
                         <div className="text-slate-700">
-                          • {selectedLang === 'hi' ? 'वार्षिक आय: ₹6.3 लाख' : selectedLang === 'en' ? 'Annual Income: ₹6.3 Lakhs' : 'ವಾರ್ಷಿಕ ಆದಾಯ: ₹6.3 ಲಕ್ಷ'}
+                          • {selectedLang === 'hi' ? 'वार्षिक आय' : selectedLang === 'en' ? 'Annual Income' : 'ವಾರ್ಷಿಕ ಆದಾಯ'}: {getIncome()}
                         </div>
                       </div>
                     </div>
@@ -310,7 +421,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
 
                 {/* Row 2: Family & Horoscope Details */}
                 <div className="grid grid-cols-2 gap-3.5">
-                  {/* Family Details */}
+                  {/* Family Details (Dynamic) */}
                   <div className="bg-[#f6f2e9] text-[#0c1a2e] p-4 rounded-2xl border border-[#d4af37]/40 shadow-md">
                     <div className="flex items-center gap-2 pb-2 mb-2 border-b border-[#0c1a2e]/10">
                       <div className="w-6 h-6 rounded-full bg-[#0c1a2e] text-[#f6e8b1] flex items-center justify-center text-xs">
@@ -326,46 +437,36 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'पिता' : selectedLang === 'en' ? 'Father' : 'ತಂದೆ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? family.fatherNameHi : selectedLang === 'en' ? family.fatherNameEn : family.fatherNameKn}
-                        </span>
+                        <span className="font-bold">: {getFather()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'माता' : selectedLang === 'en' ? 'Mother' : 'ತಾಯಿ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? family.motherNameHi : selectedLang === 'en' ? family.motherNameEn : family.motherNameKn}
-                        </span>
+                        <span className="font-bold">: {getMother()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'भाई' : selectedLang === 'en' ? 'Brother' : 'ಅಣ್ಣ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? family.brotherNameHi : selectedLang === 'en' ? family.brotherNameEn : family.brotherNameKn}
-                        </span>
+                        <span className="font-bold">: {getBrother()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'परिवार' : selectedLang === 'en' ? 'Family Type' : 'ಕುಟುಂಬದ ಪ್ರಕಾರ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? 'मध्यमवर्गीय' : selectedLang === 'en' ? 'Middle-Class' : 'ವಿಭಕ್ತ ಕುಟುಂಬ'}
-                        </span>
+                        <span className="font-bold">: {getFamilyType()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'मकान' : selectedLang === 'en' ? 'House' : 'ಮನೆ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? 'स्वयं का घर' : selectedLang === 'en' ? 'Own House' : 'ಸ್ವಂತ ಮನೆ'}
-                        </span>
+                        <span className="font-bold">: {getHouse()}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Horoscope Details */}
+                  {/* Horoscope Details (Dynamic) */}
                   <div className="bg-[#f6f2e9] text-[#0c1a2e] p-4 rounded-2xl border border-[#d4af37]/40 shadow-md">
                     <div className="flex items-center gap-2 pb-2 mb-2 border-b border-[#0c1a2e]/10">
                       <div className="w-6 h-6 rounded-full bg-[#0c1a2e] text-[#f6e8b1] flex items-center justify-center text-xs">
@@ -381,39 +482,31 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'राशि' : selectedLang === 'en' ? 'Rashi' : 'ರಾಶಿ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? horoscope.rashiHi : selectedLang === 'en' ? horoscope.rashiEn : horoscope.rashiKn}
-                        </span>
+                        <span className="font-bold">: {getRashi()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'नक्षत्र' : selectedLang === 'en' ? 'Nakshatra' : 'ನಕ್ಷತ್ರ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? horoscope.nakshatraHi : selectedLang === 'en' ? horoscope.nakshatraEn : horoscope.nakshatraKn}
-                        </span>
+                        <span className="font-bold">: {getNakshatra()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'गण' : selectedLang === 'en' ? 'Gana' : 'ಗಣ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? horoscope.ganaHi : selectedLang === 'en' ? horoscope.ganaEn : horoscope.ganaKn}
-                        </span>
+                        <span className="font-bold">: {getGana()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'चरण' : selectedLang === 'en' ? 'Pada' : 'ಪಾದ'}
                         </span>
-                        <span className="font-bold">
-                          : {selectedLang === 'hi' ? horoscope.padaHi : selectedLang === 'en' ? horoscope.padaEn : horoscope.padaKn}
-                        </span>
+                        <span className="font-bold">: {getPada()}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Row: Assets Details */}
+                {/* Bottom Row: Assets Details (Dynamic) */}
                 <div className="bg-[#f6f2e9] text-[#0c1a2e] px-5 py-3 rounded-2xl border border-[#d4af37]/40 shadow-md flex items-center justify-between">
                   <div className="flex items-center gap-2 font-bold text-sm font-cinzel">
                     <span className="text-[#0c1a2e]">❖</span>
@@ -426,13 +519,13 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                     <div>
                       🌱 {selectedLang === 'hi' ? 'कृषि भूमि' : selectedLang === 'en' ? 'Farmland' : 'ಕೃಷಿ ಭೂಮಿ'}:{' '}
                       <span className="font-bold text-[#0c1a2e]">
-                        13.10 {selectedLang === 'hi' ? 'एकड़' : selectedLang === 'en' ? 'Acres' : 'ಎಕರೆ'}
+                        {getLand()}
                       </span>
                     </div>
                     <div>
                       👥 {selectedLang === 'hi' ? 'समुदाय' : selectedLang === 'en' ? 'Community' : 'ಜಾತಿ'}:{' '}
                       <span className="font-bold text-[#0c1a2e]">
-                        {selectedLang === 'hi' ? 'वीरशैव लिंगायत' : selectedLang === 'en' ? 'Veerashaiva Lingayat' : 'ವೀರಶೈವ ಲಿಂಗಾಯತ'}
+                        {getCommunity()}
                       </span>
                     </div>
                   </div>
