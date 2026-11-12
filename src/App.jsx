@@ -286,6 +286,7 @@ export default function App() {
         onClose={() => setIsPhotoEditorOpen(false)}
         photoSettings={profile.photo}
         onSavePhoto={handleSavePhoto}
+        isLightMode={isLightMode}
       />
 
       <ProfileEditModal
@@ -293,12 +294,14 @@ export default function App() {
         onClose={() => setIsProfileEditOpen(false)}
         profile={profile}
         onSaveProfile={handleSaveProfile}
+        isLightMode={isLightMode}
       />
 
       <PdfBiodataModal
         isOpen={isPdfModalOpen}
         onClose={() => setIsPdfModalOpen(false)}
         profile={profile}
+        isLightMode={isLightMode}
       />
     </div>
   );

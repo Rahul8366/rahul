@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import confetti from 'canvas-confetti';
 
-export default function PdfBiodataModal({ isOpen, onClose, profile }) {
+export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode }) {
   const [selectedLang, setSelectedLang] = useState('kn'); // 'kn', 'en', 'hi'
   const [isGenerating, setIsGenerating] = useState(false);
   const cardRef = useRef(null);
@@ -185,29 +185,57 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-[#08172c] border border-[#d4af37]/40 rounded-3xl p-3 sm:p-6 shadow-2xl text-slate-100 my-auto max-h-[96vh] flex flex-col">
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 backdrop-blur-md overflow-y-auto transition-colors ${
+        isLightMode ? 'bg-amber-950/30' : 'bg-black/85'
+      }`}
+    >
+      <div
+        className={`relative w-full max-w-5xl rounded-3xl p-3 sm:p-6 shadow-2xl my-auto max-h-[96vh] flex flex-col border transition-all ${
+          isLightMode
+            ? 'bg-[#fbf9f4] border-2 border-[#c59b27]/60 text-slate-900 shadow-amber-950/15'
+            : 'bg-[#08172c] border border-[#d4af37]/40 text-slate-100'
+        }`}
+      >
         
         {/* Modal Controls Header */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between pb-3 mb-3 border-b border-[#d4af37]/20 gap-3 shrink-0">
+        <div
+          className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-between pb-3 mb-3 border-b gap-3 shrink-0 ${
+            isLightMode ? 'border-[#c59b27]/25' : 'border-[#d4af37]/20'
+          }`}
+        >
           <div>
-            <h3 className="text-base sm:text-xl font-cinzel font-bold text-[#f6e8b1] flex items-center gap-2">
+            <h3
+              className={`text-base sm:text-xl font-cinzel font-bold flex items-center gap-2 ${
+                isLightMode ? 'text-[#855b0a]' : 'text-[#f6e8b1]'
+              }`}
+            >
               <FileText className="w-5 h-5 text-[#d4af37]" />
               <span>ವಿವಾಹ ಬಯೋಡೇಟಾ ಡೌನ್‌ಲೋಡ್ • Marriage Profile</span>
             </h3>
-            <p className="text-[11px] sm:text-xs text-slate-400">
+            <p
+              className={`text-[11px] sm:text-xs font-medium ${
+                isLightMode ? 'text-slate-600' : 'text-slate-400'
+              }`}
+            >
               Shows your live edited template. Ready to download or print.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 justify-end">
             {/* 3-Language Switcher */}
-            <div className="bg-[#050f1d] p-1 rounded-xl border border-white/10 flex items-center">
+            <div
+              className={`p-1 rounded-xl border flex items-center ${
+                isLightMode ? 'bg-white border-slate-300' : 'bg-[#050f1d] border-white/10'
+              }`}
+            >
               <button
                 onClick={() => setSelectedLang('kn')}
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'kn'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : isLightMode
+                    ? 'text-slate-700 hover:text-slate-900'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -218,6 +246,8 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'en'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : isLightMode
+                    ? 'text-slate-700 hover:text-slate-900'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -228,6 +258,8 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'hi'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : isLightMode
+                    ? 'text-slate-700 hover:text-slate-900'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -237,7 +269,11 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
 
             <button
               onClick={handlePrint}
-              className="p-2 rounded-xl border border-white/20 text-slate-300 hover:bg-white/10 transition-colors cursor-pointer"
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+                isLightMode
+                  ? 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                  : 'border-white/20 text-slate-300 hover:bg-white/10'
+              }`}
               title="Print"
             >
               <Printer className="w-4 h-4" />
@@ -254,7 +290,11 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                isLightMode
+                  ? 'hover:bg-black/5 text-slate-600 hover:text-slate-900'
+                  : 'hover:bg-white/10 text-slate-300 hover:text-white'
+              }`}
             >
               <X className="w-5 h-5" />
             </button>
