@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Compass, Sparkles, ShieldCheck } from 'lucide-react';
+import { Heart, Compass, ShieldCheck } from 'lucide-react';
 import TiltCard from './TiltCard';
 
 export default function AboutMeSection({ profile, language, isLightMode }) {
@@ -95,7 +95,6 @@ export default function AboutMeSection({ profile, language, isLightMode }) {
                 isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
               }`}
             >
-              <Sparkles className="w-5 h-5 text-[#d4af37]" />
               <span className="text-xs uppercase tracking-widest font-cinzel">
                 {language === 'hi' ? 'व्यक्तिगत विचार' : language === 'en' ? 'Personal Statement' : 'ವೈಯಕ್ತಿಕ ಹೇಳಿಕೆ'}
               </span>

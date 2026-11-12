@@ -1,5 +1,5 @@
 import React from 'react';
-import { Landmark, Trees, Home, DollarSign, Utensils, Award, Sparkles } from 'lucide-react';
+import { Landmark, Trees, Home, DollarSign, Utensils, Award } from 'lucide-react';
 import TiltCard from './TiltCard';
 
 export default function AssetsSection({ profile, language, isLightMode }) {
@@ -169,7 +169,6 @@ export default function AssetsSection({ profile, language, isLightMode }) {
                   }`}
                 >
                   <span>{getDesc(c)}</span>
-                  <Sparkles className="w-3.5 h-3.5 text-[#d4af37] opacity-60" />
                 </div>
               </TiltCard>
             );

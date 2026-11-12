@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MapPin, MessageSquare, Copy, Check, Sparkles, Send } from 'lucide-react';
+import { Phone, MapPin, MessageSquare, Copy, Check, Send } from 'lucide-react';
 
 export default function ContactSection({ profile, language, isLightMode }) {
   const { contact, personal } = profile;
@@ -105,7 +105,6 @@ export default function ContactSection({ profile, language, isLightMode }) {
                       isLightMode ? 'text-[#0b172a]' : 'text-[#f6e8b1]'
                     }`}
                   >
-                    <Sparkles className="w-5 h-5 text-[#d4af37]" />
                     {language === 'hi'
                       ? 'सीधा संपर्क विवरण'
                       : language === 'en'

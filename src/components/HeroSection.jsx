@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, FileDown, MessageSquare, ChevronDown, Briefcase, MapPin, Sparkles } from 'lucide-react';
+import { Camera, FileDown, MessageSquare, ChevronDown, Briefcase, MapPin } from 'lucide-react';
 import TiltCard from './TiltCard';
 
 export default function HeroSection({
@@ -157,7 +157,6 @@ export default function HeroSection({
                       : 'bg-[#061426]/85 border-[#d4af37]/35 text-[#f6e8b1]'
                   }`}
                 >
-                  <Sparkles className="w-3 h-3 text-[#d4af37]" />
                   <span>
                     {language === 'hi'
                       ? `${assets.communityHi} • 13.10 एकड़`

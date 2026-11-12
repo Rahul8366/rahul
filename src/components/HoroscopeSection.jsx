@@ -1,5 +1,5 @@
 import React from 'react';
-import { Moon, Star, Sun, Compass, Clock, MapPin, Sparkles } from 'lucide-react';
+import { Moon, Star, Sun, Compass, Clock, MapPin } from 'lucide-react';
 
 export default function HoroscopeSection({ profile, language, isLightMode }) {
   const { horoscope } = profile;
@@ -207,7 +207,6 @@ export default function HoroscopeSection({ profile, language, isLightMode }) {
                   isLightMode ? 'border-slate-200 text-slate-700' : 'border-[#d4af37]/20 text-slate-300'
                 }`}
               >
-                <Sparkles className="w-4 h-4 text-[#d4af37]" />
                 <span>
                   {language === 'hi'
                     ? 'संपूर्ण जन्म पत्रिका (Horoscope Chart) आवश्यकता पर उपलब्ध है।'
