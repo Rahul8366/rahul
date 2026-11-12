@@ -17,6 +17,7 @@ import VisitorGateModal from './components/VisitorGateModal';
 import AdminDashboardModal from './components/AdminDashboardModal';
 import LegalModal from './components/LegalModal';
 import { visitorService } from './services/visitorService';
+import { useUser } from '@clerk/clerk-react';
 import { ArrowUp, Share2, FileDown, Shield, Lock } from 'lucide-react';
 
 export default function App() {
@@ -52,6 +53,32 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isLegalOpen, setIsLegalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState('privacy');
+
+  // Detect signed-in Google user via Clerk
+  let authUser = null;
+  try {
+    const clerkUser = useUser();
+    if (clerkUser && clerkUser.isSignedIn) {
+      authUser = clerkUser.user;
+    }
+  } catch (e) {}
+
+  // Auto-register visitor when authenticated via Google / Clerk
+  useEffect(() => {
+    if (authUser) {
+      const email = authUser.primaryEmailAddress?.emailAddress;
+      const name = authUser.fullName || `${authUser.firstName || ''} ${authUser.lastName || ''}`.trim() || 'Google User';
+      if (email) {
+        visitorService.registerVisitor({
+          name,
+          email,
+          phone: authUser.primaryPhoneNumber?.phoneNumber || '',
+          relation: 'Google Verified Alliance',
+        });
+        setIsVisitorGateOpen(false);
+      }
+    }
+  }, [authUser]);
 
   // Check URL query parameters and visitor session on mount
   useEffect(() => {

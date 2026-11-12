@@ -56,6 +56,33 @@ export const visitorService = {
     }
   },
 
+  // Fetch real-time visitors from Convex Cloud
+  fetchVisitorsAsync: async () => {
+    try {
+      const res = await fetch('https://successful-lark-74.convex.site/getVisitors', {
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        const convexList = await res.json();
+        if (Array.isArray(convexList) && convexList.length > 0) {
+          // Merge convex list with local storage
+          const localList = visitorService.getVisitors();
+          const combined = [...convexList];
+          for (const item of localList) {
+            if (!combined.some((c) => c.email === item.email)) {
+              combined.push(item);
+            }
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(combined));
+          return combined;
+        }
+      }
+    } catch (err) {
+      // Gracefully fall back to local store
+    }
+    return visitorService.getVisitors();
+  },
+
   // Save current visitor session
   getCurrentSession: () => {
     try {
@@ -97,6 +124,16 @@ export const visitorService = {
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       localStorage.setItem(SESSION_KEY, JSON.stringify(newVisitor));
+
+      // Asynchronously sync visitor event to Convex Cloud
+      try {
+        fetch('https://successful-lark-74.convex.site/logVisitor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newVisitor),
+        }).catch(() => {});
+      } catch (err) {}
+
       return newVisitor;
     } catch (e) {
       console.error('Error registering visitor:', e);

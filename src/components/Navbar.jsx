@@ -9,6 +9,7 @@ import {
   Share2,
   Lock,
 } from 'lucide-react';
+import { UserButton, SignedIn } from '@clerk/clerk-react';
 
 export default function Navbar({
   activeSection,
@@ -221,6 +222,13 @@ export default function Navbar({
             <FileDown className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             <span>PDF</span>
           </button>
+
+          {/* Signed-in Google Avatar */}
+          <SignedIn>
+            <div className="flex items-center">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </SignedIn>
 
           {/* Mobile Menu Button */}
           <button

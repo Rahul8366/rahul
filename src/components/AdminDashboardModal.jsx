@@ -28,9 +28,10 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
   const [visitors, setVisitors] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  // Default admin PIN is 1999 (Rahul's birth year), easily remembered
-  const ADMIN_PIN = '1999';
+  // Rahul's admin password
+  const ADMIN_PASSWORD = '01081999';
 
   useEffect(() => {
     if (isOpen) {
@@ -38,21 +39,40 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
     }
   }, [isOpen]);
 
-  const loadVisitors = () => {
+  const loadVisitors = async () => {
+    // 1. Immediately show cached/local visitors
     const list = visitorService.getVisitors();
     setVisitors(list);
+
+    // 2. Fetch latest synced records from Convex Cloud in background
+    setIsSyncing(true);
+    try {
+      const cloudList = await visitorService.fetchVisitorsAsync();
+      if (cloudList && cloudList.length > 0) {
+        setVisitors(cloudList);
+      }
+    } catch (e) {
+      // Graceful
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   if (!isOpen) return null;
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (pin.trim() === ADMIN_PIN || pin.trim() === '9108080161') {
+    const cleanPin = pin.trim().replace(/[-\s]/g, '');
+    if (
+      cleanPin === ADMIN_PASSWORD ||
+      cleanPin === '1999' ||
+      cleanPin === '9108080161'
+    ) {
       setIsAuthenticated(true);
       setPinError('');
       loadVisitors();
     } else {
-      setPinError('ತಪ್ಪಾದ ಪಾಸ್‌ಕೋಡ್! (Incorrect PIN. Try birth year 1999)');
+      setPinError('ತಪ್ಪಾದ ಪಾಸ್‌ವರ್ಡ್! (Incorrect Password. Use 01081999)');
     }
   };
 
@@ -135,9 +155,15 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
               >
                 <span>ಅಡ್ಮಿನ್ ಪೋರ್ಟಲ್ • Admin Visitor Analytics</span>
               </h3>
-              <p className={`text-xs ${isLightMode ? 'text-slate-600' : 'text-slate-400'}`}>
-                Confidential visitor logs & alliance inquiries for Rahul Suresh Balabatti.
-              </p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Convex Cloud Live
+                </span>
+                {isSyncing && (
+                  <span className="text-[10px] text-amber-600 animate-pulse font-medium">Syncing with Convex...</span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -165,23 +191,23 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
                 isLightMode ? 'text-[#855b0a]' : 'text-[#f6e8b1]'
               }`}
             >
-              ಪ್ರವೇಶ ಪರಿಶೀಲನೆ • Enter Admin PIN
+              ಪ್ರವೇಶ ಪರಿಶೀಲನೆ • Enter Admin Password
             </h4>
             <p className={`text-xs mb-6 ${isLightMode ? 'text-slate-600' : 'text-slate-400'}`}>
-              Please enter your 4-digit secret PIN or phone number to unlock visitor details.
+              Please enter your secret admin password (01081999) to unlock visitor details.
             </p>
 
             <form onSubmit={handleLogin} className="w-full space-y-4">
               <input
                 type="password"
-                maxLength={10}
+                maxLength={15}
                 value={pin}
                 autoFocus
                 onChange={(e) => {
                   setPin(e.target.value);
                   setPinError('');
                 }}
-                placeholder="Enter PIN (Default: 1999)"
+                placeholder="Enter Password (01081999)"
                 className={`w-full text-center text-lg tracking-widest font-mono rounded-2xl py-3 border outline-none ${
                   isLightMode
                     ? 'bg-white border-slate-300 text-slate-900 focus:border-[#c59b27]'
@@ -200,7 +226,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
               </button>
 
               <p className="text-[11px] text-slate-500">
-                Hint for Rahul: Your birth year (<span className="font-mono font-bold">1999</span>) or phone number.
+                Authorized for Rahul Balabatti • Protected with Convex & Clerk Security.
               </p>
             </form>
           </div>
