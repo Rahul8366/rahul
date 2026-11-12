@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --gold-primary: #d4af37;
+    --gold-light: #f6e8b1;
+    --gold-dark: #997424;
+    --gold-burnished: #855b0a;
+    --navy-deep: #050e1a;
+    --navy-mid: #0b1a30;
+    --navy-card: #0f2442;
+    --ivory-card: #fbf9f4;
+  }
+
+  body {
+    font-family: 'Outfit', 'Noto Sans Kannada', 'Noto Sans Devanagari', sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-kannada-serif {
+  font-family: 'Noto Serif Kannada', serif;
+}
+
+.font-kannada-sans {
+  font-family: 'Noto Sans Kannada', sans-serif;
+}
+
+.font-devanagari {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+/* Luxury 3D & Metallic Effects */
+.gold-text-shimmer-dark {
+  background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 28%, #b38728 55%, #fbf5b7 80%, #aa771c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 7s ease-in-out infinite alternate;
+}
+
+.gold-text-shimmer-light {
+  background: linear-gradient(135deg, #785207 0%, #b8860b 28%, #5a3c02 55%, #c59b27 80%, #684605 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 7s ease-in-out infinite alternate;
+}
+
+@keyframes goldShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.gold-frame-3d {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 8px;
+  background: linear-gradient(135deg, #dfb76c 0%, #fef8c7 25%, #9e7526 50%, #f5e49f 75%, #846019 100%);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7),
+              0 0 30px rgba(212, 175, 55, 0.35),
+              inset 0 1px 3px rgba(255, 255, 255, 0.6);
+}
+
+.gold-frame-3d-light {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 8px;
+  background: linear-gradient(135deg, #c59b27 0%, #fef6cc 25%, #855b0a 50%, #dfb76c 75%, #664303 100%);
+  box-shadow: 0 20px 40px -15px rgba(120, 80, 10, 0.25),
+              0 0 25px rgba(212, 175, 55, 0.3),
+              inset 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+/* 3D Transform and Tilt container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050e1a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #997424, #d4af37, #997424);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f6e8b1;
+}
+
+/* Print Specific rules for PDF generation */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

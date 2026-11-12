@@ -1,0 +1,292 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Menu,
+  X,
+  FileDown,
+  Edit3,
+  Sun,
+  Moon,
+  Globe,
+  Share2,
+} from 'lucide-react';
+
+export default function Navbar({
+  activeSection,
+  language,
+  setLanguage,
+  isLightMode,
+  setIsLightMode,
+  onOpenEditProfile,
+  onOpenPdfModal,
+  onShare,
+}) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { id: 'home', labelKn: 'ಮುಖಪುಟ', labelEn: 'Home', labelHi: 'मुख्य पृष्ठ' },
+    { id: 'personal', labelKn: 'ನನ್ನ ಬಗ್ಗೆ', labelEn: 'Personal', labelHi: 'व्यक्तिगत' },
+    { id: 'education', labelKn: 'ಶಿಕ್ಷಣ', labelEn: 'Education', labelHi: 'शिक्षा' },
+    { id: 'profession', labelKn: 'ಉದ್ಯೋಗ', labelEn: 'Profession', labelHi: 'व्यवसाय' },
+    { id: 'family', labelKn: 'ಕುಟುಂಬ', labelEn: 'Family', labelHi: 'परिवार' },
+    { id: 'assets', labelKn: 'ಆಸ್ತಿ', labelEn: 'Assets', labelHi: 'संपत्ति' },
+    { id: 'horoscope', labelKn: 'ಜಾತಕ', labelEn: 'Horoscope', labelHi: 'कुंडली' },
+    { id: 'preferences', labelKn: 'ಜೀವನ ಸಂಗಾತಿ', labelEn: 'Preferences', labelHi: 'अपेक्षाएँ' },
+    { id: 'contact', labelKn: 'ಸಂಪರ್ಕ', labelEn: 'Contact', labelHi: 'संपर्क' },
+  ];
+
+  const getLabel = (link) => {
+    if (language === 'hi') return link.labelHi;
+    if (language === 'en') return link.labelEn;
+    return link.labelKn;
+  };
+
+  const scrollTo = (id) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? isLightMode
+            ? 'bg-[#fcfaf5]/95 backdrop-blur-md shadow-lg border-b border-[#c59b27]/40 py-2.5'
+            : 'bg-[#061222]/95 backdrop-blur-md shadow-2xl border-b border-[#d4af37]/30 py-2.5'
+          : 'bg-transparent py-4'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Brand / Logo */}
+        <button
+          onClick={() => scrollTo('home')}
+          className="flex items-center gap-2.5 text-left group cursor-pointer"
+        >
+          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-900/30">
+            <div
+              className={`w-full h-full rounded-full flex items-center justify-center font-bold text-sm ${
+                isLightMode ? 'bg-[#ffffff] text-[#855b0a]' : 'bg-[#071527] text-[#f6e8b1]'
+              }`}
+            >
+              ॐ
+            </div>
+          </div>
+          <div>
+            <div
+              className={`text-sm sm:text-base font-bold tracking-wide font-cinzel ${
+                isLightMode ? 'text-[#855b0a]' : 'gold-text-shimmer-dark'
+              }`}
+            >
+              {language === 'hi'
+                ? 'राहुल सु. बाळबट्टी'
+                : language === 'en'
+                ? 'Rahul S. Balabatti'
+                : 'ರಾಹುಲ ಸು. ಬಳಬಟ್ಟಿ'}
+            </div>
+            <div
+              className={`text-[10px] uppercase tracking-widest font-sans font-medium ${
+                isLightMode ? 'text-slate-600' : 'text-slate-400'
+              }`}
+            >
+              Marriage Profile
+            </div>
+          </div>
+        </button>
+
+        {/* Desktop Navigation Links */}
+        <div
+          className={`hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full border shadow-inner backdrop-blur-sm ${
+            isLightMode
+              ? 'bg-[#ffffff]/80 border-[#c59b27]/40'
+              : 'bg-[#051121]/70 border-[#d4af37]/25'
+          }`}
+        >
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                className={`px-3 py-1 text-xs rounded-full transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold shadow-md'
+                    : isLightMode
+                    ? 'text-slate-800 hover:text-[#855b0a] hover:bg-[#d4af37]/10 font-medium'
+                    : 'text-slate-300 hover:text-[#f6e8b1] hover:bg-white/5'
+                }`}
+              >
+                {getLabel(link)}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Toolbar Controls */}
+        <div className="flex items-center gap-2">
+          {/* 3-Language Selector Buttons */}
+          <div
+            className={`flex items-center p-0.5 rounded-xl border ${
+              isLightMode
+                ? 'bg-[#ffffff] border-[#c59b27]/40'
+                : 'bg-[#08172c] border-[#d4af37]/35'
+            }`}
+          >
+            <button
+              onClick={() => setLanguage('kn')}
+              title="ಕನ್ನಡ (Kannada)"
+              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                language === 'kn'
+                  ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
+                  : isLightMode
+                  ? 'text-slate-700 hover:text-[#855b0a]'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              ಕನ್ನಡ
+            </button>
+            <button
+              onClick={() => setLanguage('en')}
+              title="English"
+              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                language === 'en'
+                  ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
+                  : isLightMode
+                  ? 'text-slate-700 hover:text-[#855b0a]'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              ENG
+            </button>
+            <button
+              onClick={() => setLanguage('hi')}
+              title="हिन्दी (Hindi)"
+              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+                language === 'hi'
+                  ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
+                  : isLightMode
+                  ? 'text-slate-700 hover:text-[#855b0a]'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              हिन्दी
+            </button>
+          </div>
+
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setIsLightMode(!isLightMode)}
+            title={isLightMode ? 'Dark Navy Luxury' : 'Light Royal Ivory'}
+            className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+              isLightMode
+                ? 'bg-[#ffffff] border-[#c59b27]/40 text-[#855b0a] hover:bg-[#f6efe0]'
+                : 'bg-[#08172c] border-[#d4af37]/30 text-[#f6e8b1] hover:bg-[#d4af37]/10'
+            }`}
+          >
+            {isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-[#f6e8b1]" />}
+          </button>
+
+          {/* Edit Profile Button */}
+          <button
+            onClick={onOpenEditProfile}
+            title="ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ / Edit Details"
+            className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              isLightMode
+                ? 'bg-[#ffffff] hover:bg-[#f8f3e9] border-[#c59b27]/40 text-[#855b0a]'
+                : 'bg-white/5 hover:bg-white/10 border-[#d4af37]/40 text-[#f6e8b1]'
+            }`}
+          >
+            <Edit3 className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>
+              {language === 'hi' ? 'संपादित करें' : language === 'en' ? 'Edit' : 'ಸಂಪಾದಿಸಿ'}
+            </span>
+          </button>
+
+          {/* Download PDF Button */}
+          <button
+            onClick={onOpenPdfModal}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs shadow-md hover:brightness-105 transition-all cursor-pointer"
+          >
+            <FileDown className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">PDF</span>
+            <span className="sm:hidden">PDF</span>
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`xl:hidden p-2 rounded-xl border cursor-pointer ml-1 ${
+              isLightMode
+                ? 'bg-white border-[#c59b27]/40 text-[#855b0a]'
+                : 'border-[#d4af37]/30 text-[#f6e8b1] hover:bg-white/5'
+            }`}
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div
+          className={`xl:hidden fixed inset-x-0 top-[62px] p-5 shadow-2xl border-b transition-all ${
+            isLightMode
+              ? 'bg-[#fcfaf5]/98 text-slate-800 border-[#c59b27]/40 backdrop-blur-xl'
+              : 'bg-[#071527]/98 text-slate-100 border-[#d4af37]/30 backdrop-blur-xl'
+          }`}
+        >
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                className={`py-2 px-3 text-left rounded-xl text-xs font-semibold flex items-center justify-between border ${
+                  activeSection === link.id
+                    ? 'bg-[#d4af37]/25 border-[#d4af37] text-[#061220] font-bold'
+                    : isLightMode
+                    ? 'border-slate-200 hover:bg-amber-50 text-slate-700'
+                    : 'border-white/5 hover:bg-white/5 text-slate-300'
+                }`}
+              >
+                <span>{getLabel(link)}</span>
+                <span className="text-[10px] text-slate-400">{link.labelEn}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex gap-2 pt-3 border-t border-black/10">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenEditProfile();
+              }}
+              className="flex-1 py-2.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/50 text-xs font-bold text-[#855b0a] flex items-center justify-center gap-1.5"
+            >
+              <Edit3 className="w-4 h-4 text-[#d4af37]" />
+              <span>{language === 'hi' ? 'संपादित करें' : language === 'en' ? 'Edit' : 'ಸಂಪಾದಿಸಿ'}</span>
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onShare();
+              }}
+              className="px-4 py-2.5 rounded-xl border border-[#d4af37]/40 text-xs font-semibold text-[#855b0a] flex items-center justify-center gap-1.5"
+            >
+              <Share2 className="w-4 h-4 text-[#d4af37]" />
+            </button>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
