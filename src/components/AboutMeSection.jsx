@@ -51,7 +51,7 @@ export default function AboutMeSection({ profile, language, isLightMode }) {
   const getHDesc = (h) => (language === 'hi' ? h.descHi : language === 'en' ? h.descEn : h.descKn);
 
   return (
-    <section id="aboutme" className="py-20 relative">
+    <section id="aboutme" className="py-12 sm:py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

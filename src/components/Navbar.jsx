@@ -6,7 +6,6 @@ import {
   Edit3,
   Sun,
   Moon,
-  Globe,
   Share2,
 } from 'lucide-react';
 
@@ -25,7 +24,7 @@ export default function Navbar({
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -62,20 +61,21 @@ export default function Navbar({
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? isLightMode
-            ? 'bg-[#fcfaf5]/95 backdrop-blur-md shadow-lg border-b border-[#c59b27]/40 py-2.5'
-            : 'bg-[#061222]/95 backdrop-blur-md shadow-2xl border-b border-[#d4af37]/30 py-2.5'
-          : 'bg-transparent py-4'
+            ? 'bg-[#fcfaf5]/95 backdrop-blur-md shadow-lg border-b border-[#c59b27]/40 py-2 sm:py-2.5'
+            : 'bg-[#061222]/95 backdrop-blur-md shadow-2xl border-b border-[#d4af37]/30 py-2 sm:py-2.5'
+          : 'bg-transparent py-2.5 sm:py-4'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-1.5 sm:gap-4">
+        
         {/* Brand / Logo */}
         <button
           onClick={() => scrollTo('home')}
-          className="flex items-center gap-2.5 text-left group cursor-pointer"
+          className="flex items-center gap-1.5 sm:gap-2.5 text-left group cursor-pointer shrink-0"
         >
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-900/30">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-900/30 shrink-0">
             <div
-              className={`w-full h-full rounded-full flex items-center justify-center font-bold text-sm ${
+              className={`w-full h-full rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${
                 isLightMode ? 'bg-[#ffffff] text-[#855b0a]' : 'bg-[#071527] text-[#f6e8b1]'
               }`}
             >
@@ -84,7 +84,7 @@ export default function Navbar({
           </div>
           <div>
             <div
-              className={`text-sm sm:text-base font-bold tracking-wide font-cinzel ${
+              className={`text-xs sm:text-base font-bold tracking-tight font-cinzel leading-tight ${
                 isLightMode ? 'text-[#855b0a]' : 'gold-text-shimmer-dark'
               }`}
             >
@@ -95,7 +95,7 @@ export default function Navbar({
                 : 'ರಾಹುಲ ಸು. ಬಳಬಟ್ಟಿ'}
             </div>
             <div
-              className={`text-[10px] uppercase tracking-widest font-sans font-medium ${
+              className={`text-[9px] sm:text-[10px] uppercase tracking-wider font-sans font-semibold leading-none mt-0.5 ${
                 isLightMode ? 'text-slate-600' : 'text-slate-400'
               }`}
             >
@@ -132,11 +132,11 @@ export default function Navbar({
           })}
         </div>
 
-        {/* Right Toolbar Controls */}
-        <div className="flex items-center gap-2">
+        {/* Right Toolbar Controls (Optimized for Mobile) */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* 3-Language Selector Buttons */}
           <div
-            className={`flex items-center p-0.5 rounded-xl border ${
+            className={`flex items-center p-0.5 rounded-lg sm:rounded-xl border ${
               isLightMode
                 ? 'bg-[#ffffff] border-[#c59b27]/40'
                 : 'bg-[#08172c] border-[#d4af37]/35'
@@ -145,7 +145,7 @@ export default function Navbar({
             <button
               onClick={() => setLanguage('kn')}
               title="ಕನ್ನಡ (Kannada)"
-              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+              className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded-md sm:rounded-lg transition-colors cursor-pointer ${
                 language === 'kn'
                   ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
                   : isLightMode
@@ -158,7 +158,7 @@ export default function Navbar({
             <button
               onClick={() => setLanguage('en')}
               title="English"
-              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+              className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded-md sm:rounded-lg transition-colors cursor-pointer ${
                 language === 'en'
                   ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
                   : isLightMode
@@ -171,7 +171,7 @@ export default function Navbar({
             <button
               onClick={() => setLanguage('hi')}
               title="हिन्दी (Hindi)"
-              className={`px-2 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
+              className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded-md sm:rounded-lg transition-colors cursor-pointer ${
                 language === 'hi'
                   ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220] shadow-sm'
                   : isLightMode
@@ -187,20 +187,20 @@ export default function Navbar({
           <button
             onClick={() => setIsLightMode(!isLightMode)}
             title={isLightMode ? 'Dark Navy Luxury' : 'Light Royal Ivory'}
-            className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+            className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-colors cursor-pointer ${
               isLightMode
                 ? 'bg-[#ffffff] border-[#c59b27]/40 text-[#855b0a] hover:bg-[#f6efe0]'
                 : 'bg-[#08172c] border-[#d4af37]/30 text-[#f6e8b1] hover:bg-[#d4af37]/10'
             }`}
           >
-            {isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-[#f6e8b1]" />}
+            {isLightMode ? <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f6e8b1]" />}
           </button>
 
-          {/* Edit Profile Button */}
+          {/* Edit Profile Button (Desktop only, available in mobile drawer) */}
           <button
             onClick={onOpenEditProfile}
             title="ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ / Edit Details"
-            className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+            className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
               isLightMode
                 ? 'bg-[#ffffff] hover:bg-[#f8f3e9] border-[#c59b27]/40 text-[#855b0a]'
                 : 'bg-white/5 hover:bg-white/10 border-[#d4af37]/40 text-[#f6e8b1]'
@@ -215,23 +215,22 @@ export default function Navbar({
           {/* Download PDF Button */}
           <button
             onClick={onOpenPdfModal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs shadow-md hover:brightness-105 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-[11px] sm:text-xs shadow-md hover:brightness-105 transition-all cursor-pointer"
           >
-            <FileDown className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">PDF</span>
-            <span className="sm:hidden">PDF</span>
+            <FileDown className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            <span>PDF</span>
           </button>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`xl:hidden p-2 rounded-xl border cursor-pointer ml-1 ${
+            className={`xl:hidden p-1.5 sm:p-2 rounded-lg sm:rounded-xl border cursor-pointer ${
               isLightMode
                 ? 'bg-white border-[#c59b27]/40 text-[#855b0a]'
                 : 'border-[#d4af37]/30 text-[#f6e8b1] hover:bg-white/5'
             }`}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>
         </div>
       </div>
@@ -239,7 +238,7 @@ export default function Navbar({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className={`xl:hidden fixed inset-x-0 top-[62px] p-5 shadow-2xl border-b transition-all ${
+          className={`xl:hidden fixed inset-x-0 top-[52px] sm:top-[60px] p-4 sm:p-5 shadow-2xl border-b transition-all max-h-[85vh] overflow-y-auto ${
             isLightMode
               ? 'bg-[#fcfaf5]/98 text-slate-800 border-[#c59b27]/40 backdrop-blur-xl'
               : 'bg-[#071527]/98 text-slate-100 border-[#d4af37]/30 backdrop-blur-xl'

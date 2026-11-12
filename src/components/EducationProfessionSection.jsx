@@ -54,7 +54,7 @@ export default function EducationProfessionSection({ profile, language, isLightM
   };
 
   return (
-    <section id="education" className="py-20 relative">
+    <section id="education" className="py-12 sm:py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Grid layout for Education & Career */}

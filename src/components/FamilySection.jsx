@@ -56,7 +56,7 @@ export default function FamilySection({ profile, language, isLightMode }) {
   const getDesc = (m) => (language === 'hi' ? m.descHi : language === 'en' ? m.descEn : m.descKn);
 
   return (
-    <section id="family" className="py-20 relative">
+    <section id="family" className="py-12 sm:py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

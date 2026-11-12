@@ -4,7 +4,7 @@ export const initialProfileData = {
     fullNameKn: "ರಾಹುಲ ಸುರೇಶ ಬಳಬಟ್ಟಿ",
     fullNameHi: "राहुल सुरेश बाळबट्टी",
     titleKn: "ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ",
-    titleEn: "Matrimonial Biodata",
+    titleEn: "Marriage Profile",
     titleHi: "विवाह परिचय पत्र",
     subTitleKn: "॥ ಶ್ರೀ ಗುರು ಬಸವಲಿಂಗಾಯ ನಮಃ ॥",
     subTitleEn: "|| Sri Guru Basavalingaya Namaha ||",
@@ -30,10 +30,10 @@ export const initialProfileData = {
     maritalStatusHi: "अविवाहित (Unmarried)",
   },
   photo: {
-    url: "/rahul_photo.jpg",
+    url: "/rahul_portrait.jpg",
     zoom: 1.05,
     positionX: 50,
-    positionY: 25,
+    positionY: 20,
     rotation: 0,
   },
   education: [

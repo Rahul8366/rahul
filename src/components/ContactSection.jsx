@@ -14,16 +14,16 @@ export default function ContactSection({ profile, language, isLightMode }) {
   const getWhatsappMsg = () => {
     if (language === 'hi') {
       return encodeURIComponent(
-        `नमस्ते / Hello,\n\nमैंने श्री राहुल सुरेश बाळबट्टी (${personal.fullNameHi}) का वैवाहिक बायोडाटा देखा और इस संबंध में आपके परिवार से बातचीत करना चाहते हैं।\n\nधन्यवाद!`
+        `नमस्ते राहुल,\n\nमैंने आपकी मैरिज प्रोफाइल (${personal.fullNameHi}) देखी और मुझे आपकी प्रोफाइल पसंद आई। मैं विवाह संबंध के बारे में आपसे और आपके परिवार से बात करना चाहता/चाहती हूँ।\n\nधन्यवाद!`
       );
     }
     if (language === 'en') {
       return encodeURIComponent(
-        `Hello,\n\nI came across the matrimonial biodata of Mr. Rahul Suresh Balabatti (${personal.fullNameEn}) and would like to connect with your family regarding matrimonial alliance.\n\nThank you!`
+        `Hello Rahul,\n\nI came across your marriage profile (${personal.fullNameEn}) and I am interested in your profile. I would like to talk with you and your family regarding a marriage alliance.\n\nThank you!`
       );
     }
     return encodeURIComponent(
-      `ನಮಸ್ಕಾರ / Hello,\n\nI came across the matrimonial biodata of Mr. Rahul Suresh Balabatti (${personal.fullNameKn}) and would like to connect with your family regarding matrimonial alliance.\n\nThank you!`
+      `ನಮಸ್ಕಾರ ರಾಹುಲ್,\n\nನಿಮ್ಮ ಮದುವೆ ಪರಿಚಯ ಪ್ರೊಫೈಲ್ (${personal.fullNameKn}) ನೋಡಿದೆವು, ನಮಗೆ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಇಷ್ಟವಾಗಿದೆ. ಮದುವೆ ಸಂಬಂಧದ ಕುರಿತು ನಿಮ್ಮೊಂದಿಗೆ ಹಾಗೂ ನಿಮ್ಮ ಕುಟುಂಬದೊಂದಿಗೆ ಮಾತನಾಡಲು ಬಯಸುತ್ತೇವೆ.\n\nಧನ್ಯವಾದಗಳು!`
     );
   };
 
@@ -34,7 +34,7 @@ export default function ContactSection({ profile, language, isLightMode }) {
   };
 
   return (
-    <section id="contact" className="py-24 relative">
+    <section id="contact" className="py-12 sm:py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -49,10 +49,10 @@ export default function ContactSection({ profile, language, isLightMode }) {
             <Phone className="w-3.5 h-3.5 text-[#d4af37]" />
             <span>
               {language === 'hi'
-                ? 'संपर्क एवं पता • Get in Touch'
+                ? 'संपर्क एवं बातचीत • Connect'
                 : language === 'en'
-                ? 'Contact & Address'
-                : 'ಸಂಪರ್ಕ ಹಾಗೂ ವಿಳಾಸ • Get in Touch'}
+                ? 'Direct Contact & Connect'
+                : 'ಸಂಪರ್ಕ ಹಾಗೂ ಮಾತುಕತೆ • Connect'}
             </span>
           </div>
 
@@ -64,7 +64,7 @@ export default function ContactSection({ profile, language, isLightMode }) {
             {language === 'hi'
               ? 'संपर्क विवरण'
               : language === 'en'
-              ? 'Contact Information'
+              ? 'Contact Details'
               : 'ಸಂಪರ್ಕ ಮಾಹಿತಿ'}
           </h2>
           <p
@@ -73,10 +73,10 @@ export default function ContactSection({ profile, language, isLightMode }) {
             }`}
           >
             {language === 'hi'
-              ? 'अधिक जानकारी अथवा विवाह प्रस्ताव हेतु परिवार से सीधे संपर्क करें।'
+              ? 'विवाह संबंध के बारे में बात करने के लिए सीधे व्हाट्सएप या फोन पर संपर्क करें।'
               : language === 'en'
-              ? 'Feel free to reach out to the family for further discussions and matrimonial alliance.'
-              : 'ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ಅಥವಾ ಜಾತಕ ಹೊಂದಾಣಿಕೆಗಾಗಿ ಕುಟುಂಬದವರನ್ನು ಸಂಪರ್ಕಿಸಿ.'}
+              ? 'Connect directly on WhatsApp or call to talk with Rahul and his family.'
+              : 'ಮದುವೆ ಸಂಬಂಧದ ಕುರಿತು ಮಾತನಾಡಲು ನೇರವಾಗಿ ವಾಟ್ಸಾಪ್ ಅಥವಾ ಕರೆ ಮೂಲಕ ಸಂಪರ್ಕಿಸಿ.'}
           </p>
           <div className="h-1 w-20 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mt-3" />
         </div>
@@ -229,10 +229,10 @@ export default function ContactSection({ profile, language, isLightMode }) {
                       }`}
                     >
                       {language === 'hi'
-                        ? 'व्हाट्सएप पर बात करें'
+                        ? 'व्हाट्सएप पर सीधे बात करें'
                         : language === 'en'
-                        ? 'WhatsApp Connect'
-                        : 'WhatsApp ಸಂಪರ್ಕ'}
+                        ? 'Chat on WhatsApp'
+                        : 'WhatsApp ನಲ್ಲಿ ನೇರ ಸಂಪರ್ಕ'}
                     </h4>
                     <p
                       className={`text-xs leading-relaxed max-w-xs mx-auto mb-6 font-medium ${
@@ -240,10 +240,10 @@ export default function ContactSection({ profile, language, isLightMode }) {
                       }`}
                     >
                       {language === 'hi'
-                        ? 'एक क्लिक में सीधे 9108080161 पर व्हाट्सएप संदेश भेजें।'
+                        ? 'राहुल एवं उनके परिवार से विवाह संबंध पर बात करने हेतु 9108080161 पर सीधे संदेश भेजें।'
                         : language === 'en'
-                        ? 'Connect directly on WhatsApp at 9108080161 with a polite matrimonial greeting.'
-                        : 'ಒಂದು ಕ್ಲಿಕ್‌ನಲ್ಲಿ 9108080161 ಗೆ ವಾಟ್ಸಾಪ್ ಮೂಲಕ ನೇರವಾಗಿ ಸಂಪರ್ಕ ಸಾಧಿಸಿ.'}
+                        ? 'Click below to send a direct message on 9108080161 expressing interest to talk with Rahul and family.'
+                        : 'ರಾಹುಲ್ ಮತ್ತು ಕುಟುಂಬದೊಂದಿಗೆ ಮಾತನಾಡಲು 9108080161 ಗೆ ನೇರ ಸಂದೇಶ ಕಳುಹಿಸಿ.'}
                     </p>
                   </div>
 
@@ -257,9 +257,9 @@ export default function ContactSection({ profile, language, isLightMode }) {
                     <Send className="w-4 h-4" />
                     <span>
                       {language === 'hi'
-                        ? 'व्हाट्सएप (9108080161) पर संदेश भेजें'
+                        ? 'व्हाट्सएप (9108080161) पर बात करें'
                         : language === 'en'
-                        ? 'Message on WhatsApp (9108080161)'
+                        ? 'Chat on WhatsApp (9108080161)'
                         : 'WhatsApp ನಲ್ಲಿ ಸಂದೇಶ ಕಳುಹಿಸಿ'}
                     </span>
                   </a>

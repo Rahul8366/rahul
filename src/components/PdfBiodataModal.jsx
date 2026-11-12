@@ -36,7 +36,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
       pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Rahul_Suresh_Balabatti_Matrimonial_Biodata_${selectedLang.toUpperCase()}.pdf`);
+      pdf.save(`Rahul_Suresh_Balabatti_Marriage_Profile_${selectedLang.toUpperCase()}.pdf`);
 
       confetti({
         particleCount: 100,
@@ -64,32 +64,32 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
 
   const getTitle = () => {
     if (selectedLang === 'hi') return personal.titleHi;
-    if (selectedLang === 'en') return personal.titleEn.toUpperCase();
+    if (selectedLang === 'en') return 'MARRIAGE PROFILE';
     return personal.titleKn;
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-[#08172c] border border-[#d4af37]/40 rounded-3xl p-4 sm:p-6 shadow-2xl text-slate-100 my-auto">
+      <div className="relative w-full max-w-5xl bg-[#08172c] border border-[#d4af37]/40 rounded-3xl p-3 sm:p-6 shadow-2xl text-slate-100 my-auto max-h-[96vh] flex flex-col">
         
         {/* Modal Controls Header */}
-        <div className="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-[#d4af37]/20 gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between pb-3 mb-3 border-b border-[#d4af37]/20 gap-3 shrink-0">
           <div>
-            <h3 className="text-lg sm:text-xl font-cinzel font-bold text-[#f6e8b1] flex items-center gap-2">
+            <h3 className="text-base sm:text-xl font-cinzel font-bold text-[#f6e8b1] flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#d4af37]" />
-              ವಿವಾಹ ಬಯೋಡೇಟಾ ಡೌನ್‌ಲೋಡ್ • Biodata PDF Export
+              <span>ವಿವಾಹ ಬಯೋಡೇಟಾ ಡೌನ್‌ಲೋಡ್ • Marriage Profile</span>
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-[11px] sm:text-xs text-slate-400">
               Download or print in Kannada, English, or Hindi. Ready for WhatsApp sharing.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 justify-end">
             {/* 3-Language Switcher */}
             <div className="bg-[#050f1d] p-1 rounded-xl border border-white/10 flex items-center">
               <button
                 onClick={() => setSelectedLang('kn')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'kn'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
                     : 'text-slate-300 hover:text-white'
@@ -99,7 +99,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
               </button>
               <button
                 onClick={() => setSelectedLang('en')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'en'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
                     : 'text-slate-300 hover:text-white'
@@ -109,7 +109,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
               </button>
               <button
                 onClick={() => setSelectedLang('hi')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold cursor-pointer ${
                   selectedLang === 'hi'
                     ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
                     : 'text-slate-300 hover:text-white'
@@ -130,7 +130,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
             <button
               onClick={handleDownloadPdf}
               disabled={isGenerating}
-              className="px-4 py-2 bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs rounded-xl shadow-lg hover:brightness-110 flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+              className="px-3.5 py-1.5 bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs rounded-xl shadow-lg hover:brightness-110 flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
             >
               <Download className="w-4 h-4" />
               <span>{isGenerating ? 'ಸಿದ್ಧವಾಗುತ್ತಿದೆ...' : 'PDF ಡೌನ್‌ಲೋಡ್'}</span>
@@ -138,20 +138,20 @@ export default function PdfBiodataModal({ isOpen, onClose, profile }) {
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer ml-1"
+              className="p-1.5 rounded-full hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Scaled Printable Preview Sheet */}
-        <div className="overflow-x-auto pb-4 flex justify-center">
+        {/* Responsive Mobile-Friendly Scrollable Container */}
+        <div className="overflow-x-auto overflow-y-auto flex-1 pb-4 flex justify-start lg:justify-center">
           <div
             ref={cardRef}
             id="printable-biodata"
             style={{ width: '920px', minHeight: '620px' }}
-            className="bg-[#071527] border-2 border-[#d4af37]/60 rounded-3xl p-6 sm:p-8 relative text-slate-900 shadow-2xl flex flex-col justify-between shrink-0 select-none"
+            className="bg-[#071527] border-2 border-[#d4af37]/60 rounded-3xl p-6 sm:p-8 relative text-slate-900 shadow-2xl flex flex-col justify-between shrink-0 select-none mx-auto"
           >
             {/* Top Ornamental Frame Header */}
             <div className="text-center mb-5 relative z-10">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, FileDown, PhoneCall, ChevronDown, Briefcase, MapPin, Sparkles } from 'lucide-react';
+import { Camera, FileDown, MessageSquare, ChevronDown, Briefcase, MapPin, Sparkles } from 'lucide-react';
 import TiltCard from './TiltCard';
 
 export default function HeroSection({
@@ -8,7 +8,6 @@ export default function HeroSection({
   isLightMode,
   onOpenPhotoEditor,
   onOpenPdfModal,
-  onOpenContact,
 }) {
   const { personal, photo, profession, assets } = profile;
 
@@ -58,60 +57,67 @@ export default function HeroSection({
     return 'ವೀರಶೈವ ಲಿಂಗಾಯತ ಸಂಪ್ರದಾಯದ, ಸುಶಿಕ್ಷಿತ, ಸರಳ ಹಾಗೂ ಕೌಟುಂಬಿಕ ಮೌಲ್ಯಗಳಿಗೆ ಬದ್ಧನಾಗಿರುವ ತಂತ್ರಜ್ಞಾನ ವೃತ್ತಿಪರ. ಶಾಂತಿಯುತ ಕೌಟುಂಬಿಕ ಬಾಂಧವ್ಯವನ್ನು ಬಯಸುವ ಜೀವನ ಸಂಗಾತಿಯ ಹುಡುಕಾಟದಲ್ಲಿದ್ದೇನೆ.';
   };
 
+  const getWhatsappMsg = () => {
+    if (language === 'hi') {
+      return encodeURIComponent(
+        `नमस्ते राहुल,\n\nमैंने आपकी मैरिज प्रोफाइल (${personal.fullNameHi}) देखी और मुझे आपकी प्रोफाइल पसंद आई। मैं विवाह संबंध के बारे में आपसे और आपके परिवार से बात करना चाहता/चाहती हूँ।\n\nधन्यवाद!`
+      );
+    }
+    if (language === 'en') {
+      return encodeURIComponent(
+        `Hello Rahul,\n\nI came across your marriage profile (${personal.fullNameEn}) and I am interested in your profile. I would like to talk with you and your family regarding a marriage alliance.\n\nThank you!`
+      );
+    }
+    return encodeURIComponent(
+      `ನಮಸ್ಕಾರ ರಾಹುಲ್,\n\nನಿಮ್ಮ ಮದುವೆ ಪರಿಚಯ ಪ್ರೊಫೈಲ್ (${personal.fullNameKn}) ನೋಡಿದೆವು, ನಮಗೆ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಇಷ್ಟವಾಗಿದೆ. ಮದುವೆ ಸಂಬಂಧದ ಕುರಿತು ನಿಮ್ಮೊಂದಿಗೆ ಹಾಗೂ ನಿಮ್ಮ ಕುಟುಂಬದೊಂದಿಗೆ ಮಾತನಾಡಲು ಬಯಸುತ್ತೇವೆ.\n\nಧನ್ಯವಾದಗಳು!`
+    );
+  };
+
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] pt-28 pb-16 flex items-center justify-center overflow-hidden"
+      className="relative min-h-[90vh] pt-16 sm:pt-24 pb-12 sm:pb-16 flex items-center justify-center overflow-hidden"
     >
       {/* Background radial gold glow */}
       <div
-        className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl pointer-events-none ${
+        className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[600px] h-[340px] sm:h-[600px] rounded-full blur-3xl pointer-events-none ${
           isLightMode
             ? 'bg-gradient-to-br from-[#d4af37]/20 via-[#c59b27]/10 to-transparent'
             : 'bg-gradient-to-br from-[#d4af37]/15 via-[#b38728]/5 to-transparent'
         }`}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-14 items-center">
           
           {/* LEFT: 3D HERO PROFILE PHOTO (Centerpiece) */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative group perspective-1000">
-              {/* 3D Decorative Floating Badges */}
-              <div
-                className={`absolute -top-4 -left-4 z-20 px-3.5 py-1.5 rounded-2xl shadow-xl backdrop-blur-md flex items-center gap-2 transform -rotate-3 hover:rotate-0 transition-transform duration-300 border ${
-                  isLightMode
-                    ? 'bg-white/95 border-[#c59b27]/50 text-[#855b0a]'
-                    : 'bg-[#08182b]/95 border-[#d4af37]/50 text-[#f6e8b1]'
-                }`}
-              >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#d4af37] animate-pulse" />
-                <span className="text-xs font-bold">
-                  {language === 'hi' ? 'एमसीए स्नातक' : language === 'en' ? 'MCA Graduate' : 'ಎಂ.ಸಿ.ಎ. ಪದವೀಧರ'}
-                </span>
-              </div>
-
-              <div
-                className={`absolute -bottom-4 -right-4 z-20 px-3.5 py-1.5 rounded-2xl shadow-xl backdrop-blur-md flex items-center gap-2 transform rotate-3 hover:rotate-0 transition-transform duration-300 border ${
-                  isLightMode
-                    ? 'bg-white/95 border-[#c59b27]/50 text-[#855b0a]'
-                    : 'bg-[#08182b]/95 border-[#d4af37]/50 text-[#f6e8b1]'
-                }`}
-              >
-                <Briefcase className="w-3.5 h-3.5 text-[#d4af37]" />
-                <span className="text-xs font-bold">
-                  {language === 'hi' ? 'टेक इंजीनियर' : language === 'en' ? 'Tech Engineer' : 'ಟೆಕ್ ಇಂಜಿನಿಯರ್'}
-                </span>
-              </div>
-
+            <div className="relative group perspective-1000 w-full max-w-[300px] sm:max-w-[360px]">
+              
               {/* Main 3D Gold Metallic Photo Frame */}
               <div
                 className={`${
                   isLightMode ? 'gold-frame-3d-light' : 'gold-frame-3d'
-                } w-72 sm:w-84 md:w-92 h-[420px] sm:h-[480px] md:h-[510px] transform hover:scale-[1.015] transition-all duration-500`}
+                } w-full h-[340px] sm:h-[440px] md:h-[480px] transform hover:scale-[1.01] transition-all duration-500`}
               >
-                <div className="w-full h-full rounded-[1.25rem] overflow-hidden bg-[#071322] relative">
+                <div className="w-full h-full rounded-[1.15rem] sm:rounded-[1.25rem] overflow-hidden bg-[#071322] relative">
+                  
+                  {/* Non-Colliding Badges anchored inside top corners of photo */}
+                  <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg sm:rounded-xl shadow-lg backdrop-blur-md flex items-center gap-1.5 border bg-[#061426]/85 border-[#d4af37]/60 text-[#f6e8b1]">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#d4af37] animate-pulse" />
+                    <span className="text-[10px] sm:text-[11px] font-bold">
+                      {language === 'hi' ? 'एमसीए' : language === 'en' ? 'MCA Graduate' : 'ಎಂ.ಸಿ.ಎ.'}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg sm:rounded-xl shadow-lg backdrop-blur-md flex items-center gap-1.5 border bg-[#061426]/85 border-[#d4af37]/60 text-[#f6e8b1]">
+                    <Briefcase className="w-3 h-3 text-[#d4af37]" />
+                    <span className="text-[10px] sm:text-[11px] font-bold">
+                      {language === 'hi' ? 'आईटी इंजीनियर' : language === 'en' ? 'IT Engineer' : 'ಟೆಕ್ ಇಂಜಿನಿಯರ್'}
+                    </span>
+                  </div>
+
+                  {/* Photo with natural face-centered framing */}
                   <img
                     src={photo.url}
                     alt={personal.fullNameEn}
@@ -123,37 +129,35 @@ export default function HeroSection({
                   />
 
                   {/* Soft bottom vignette overlay */}
-                  <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#061220]/80 via-[#061220]/30 to-transparent pointer-events-none" />
+                  <div className="absolute inset-x-0 bottom-0 h-20 sm:h-24 bg-gradient-to-t from-[#061220]/80 via-[#061220]/25 to-transparent pointer-events-none" />
 
                   {/* Corner Ornate Accents */}
-                  <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#f6e8b1]/80 rounded-tl-sm pointer-events-none" />
-                  <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#f6e8b1]/80 rounded-tr-sm pointer-events-none" />
-                  <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#f6e8b1]/80 rounded-bl-sm pointer-events-none" />
-                  <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#f6e8b1]/80 rounded-br-sm pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 border-[#f6e8b1]/80 rounded-bl-sm pointer-events-none" />
+                  <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 border-[#f6e8b1]/80 rounded-br-sm pointer-events-none" />
 
-                  {/* Floating Click-to-Adjust Photo Button */}
+                  {/* Click-to-Adjust Photo Button */}
                   <button
                     onClick={onOpenPhotoEditor}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 px-4 py-2 bg-[#061220]/85 hover:bg-[#061220] border border-[#d4af37]/70 rounded-full text-xs text-[#f6e8b1] font-semibold flex items-center gap-2 shadow-xl backdrop-blur-md opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 cursor-pointer"
+                    className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 px-3 py-1 bg-[#061220]/90 hover:bg-[#061220] border border-[#d4af37]/70 rounded-full text-[10px] sm:text-[11px] text-[#f6e8b1] font-semibold flex items-center gap-1.5 shadow-xl backdrop-blur-md transition-all duration-300 cursor-pointer"
                   >
-                    <Camera className="w-3.5 h-3.5 text-[#d4af37]" />
+                    <Camera className="w-3 h-3 text-[#d4af37]" />
                     <span>
-                      {language === 'hi' ? 'फ़ोटो समायोजित करें' : language === 'en' ? 'Adjust Photo' : 'ಫೋಟೋ ಹೊಂದಿಸಿ'}
+                      {language === 'hi' ? 'फ़ोटो बदलें' : language === 'en' ? 'Adjust Photo' : 'ಫೋಟೋ ಹೊಂದಿಸಿ'}
                     </span>
                   </button>
                 </div>
               </div>
 
-              {/* Subtitle pill below photo */}
-              <div className="mt-4 text-center">
+              {/* Subtitle pill below photo with clean spacing (NO overlap) */}
+              <div className="mt-3 sm:mt-4 text-center px-1">
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs border font-medium ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs border font-medium ${
                     isLightMode
                       ? 'bg-white border-[#c59b27]/40 text-[#855b0a] shadow-sm'
-                      : 'bg-[#061426]/70 border-[#d4af37]/30 text-[#f6e8b1]'
+                      : 'bg-[#061426]/85 border-[#d4af37]/35 text-[#f6e8b1]'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <Sparkles className="w-3 h-3 text-[#d4af37]" />
                   <span>
                     {language === 'hi'
                       ? `${assets.communityHi} • 13.10 एकड़`
@@ -170,22 +174,22 @@ export default function HeroSection({
           <div className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left">
             
             {/* Auspicious Invocation Header */}
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
-              <span className="h-[1.5px] w-8 bg-[#d4af37]" />
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 mb-1.5">
+              <span className="h-[1.5px] w-6 sm:w-8 bg-[#d4af37]" />
               <span
-                className={`text-xs sm:text-sm font-bold tracking-widest uppercase font-serif ${
+                className={`text-[11px] sm:text-sm font-bold tracking-widest uppercase font-serif ${
                   isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
                 }`}
               >
                 {getSubTitle()}
               </span>
-              <span className="h-[1.5px] w-8 bg-[#d4af37]" />
+              <span className="h-[1.5px] w-6 sm:w-8 bg-[#d4af37]" />
             </div>
 
-            {/* Official Matrimonial Biodata Header Pill */}
-            <div className="mb-3">
+            {/* Official Marriage Profile Header Pill */}
+            <div className="mb-2 sm:mb-3">
               <span
-                className={`inline-block px-4 py-1 rounded-full text-xs sm:text-sm font-bold tracking-widest uppercase border ${
+                className={`inline-block px-3.5 py-0.5 sm:px-4 sm:py-1 rounded-full text-[11px] sm:text-sm font-bold tracking-widest uppercase border ${
                   isLightMode
                     ? 'bg-[#c59b27]/15 border-[#c59b27]/50 text-[#704902]'
                     : 'bg-[#d4af37]/20 border-[#d4af37]/50 text-[#fbf5b7]'
@@ -196,16 +200,16 @@ export default function HeroSection({
             </div>
 
             {/* Candidate Grand Name */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight font-cinzel leading-tight mb-2">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight font-cinzel leading-tight mb-1 sm:mb-2">
               <span
-                className={`block mb-1 ${
+                className={`block mb-0.5 sm:mb-1 ${
                   isLightMode ? 'gold-text-shimmer-light' : 'gold-text-shimmer-dark'
                 }`}
               >
                 {getFullName()}
               </span>
               <span
-                className={`text-xl sm:text-2xl md:text-3xl font-serif font-normal tracking-wide block ${
+                className={`text-base sm:text-2xl md:text-3xl font-serif font-normal tracking-wide block ${
                   isLightMode ? 'text-slate-700' : 'text-slate-300'
                 }`}
               >
@@ -214,48 +218,48 @@ export default function HeroSection({
             </h1>
 
             {/* Role & Location Badge */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mt-3 mb-6">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mt-2 sm:mt-3 mb-4 sm:mb-6">
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs sm:text-sm font-semibold ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border text-xs sm:text-sm font-semibold ${
                   isLightMode
                     ? 'bg-white border-[#c59b27]/40 text-[#855b0a] shadow-sm'
                     : 'bg-[#0d223f]/80 border-[#d4af37]/30 text-[#f6e8b1]'
                 }`}
               >
-                <Briefcase className="w-4 h-4 text-[#d4af37]" />
+                <Briefcase className="w-3.5 h-3.5 text-[#d4af37]" />
                 <span>{getRole()}</span>
               </div>
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs sm:text-sm font-medium ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border text-xs sm:text-sm font-medium ${
                   isLightMode
                     ? 'bg-white border-slate-300 text-slate-700 shadow-sm'
                     : 'bg-[#0d223f]/80 border-[#d4af37]/30 text-slate-300'
                 }`}
               >
-                <MapPin className="w-4 h-4 text-[#d4af37]" />
+                <MapPin className="w-3.5 h-3.5 text-[#d4af37]" />
                 <span>{getLocation()}</span>
               </div>
             </div>
 
             {/* 3D Key Highlight Info Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
-              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-3 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-3 sm:my-6">
+              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-2 sm:p-3 text-center">
                 <div
-                  className={`text-[11px] uppercase tracking-wider font-semibold ${
+                  className={`text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold ${
                     isLightMode ? 'text-slate-600' : 'text-slate-400'
                   }`}
                 >
                   {language === 'hi' ? 'आयु' : language === 'en' ? 'Age' : 'ವಯಸ್ಸು'}
                 </div>
                 <div
-                  className={`text-base sm:text-lg font-bold font-mono mt-0.5 ${
+                  className={`text-sm sm:text-lg font-bold font-mono mt-0.5 ${
                     isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
                   }`}
                 >
                   {language === 'hi' ? personal.ageHi : language === 'en' ? personal.ageEn : personal.ageKn}
                 </div>
                 <div
-                  className={`text-[10px] font-sans ${
+                  className={`text-[9px] sm:text-[10px] font-sans ${
                     isLightMode ? 'text-slate-500' : 'text-slate-400'
                   }`}
                 >
@@ -263,23 +267,23 @@ export default function HeroSection({
                 </div>
               </TiltCard>
 
-              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-3 text-center">
+              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-2 sm:p-3 text-center">
                 <div
-                  className={`text-[11px] uppercase tracking-wider font-semibold ${
+                  className={`text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold ${
                     isLightMode ? 'text-slate-600' : 'text-slate-400'
                   }`}
                 >
                   {language === 'hi' ? 'ऊँचाई' : language === 'en' ? 'Height' : 'ಎತ್ತರ'}
                 </div>
                 <div
-                  className={`text-base sm:text-lg font-bold font-mono mt-0.5 ${
+                  className={`text-sm sm:text-lg font-bold font-mono mt-0.5 ${
                     isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
                   }`}
                 >
                   5 ft 6 in
                 </div>
                 <div
-                  className={`text-[10px] font-sans ${
+                  className={`text-[9px] sm:text-[10px] font-sans ${
                     isLightMode ? 'text-slate-500' : 'text-slate-400'
                   }`}
                 >
@@ -287,23 +291,23 @@ export default function HeroSection({
                 </div>
               </TiltCard>
 
-              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-3 text-center">
+              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-2 sm:p-3 text-center">
                 <div
-                  className={`text-[11px] uppercase tracking-wider font-semibold ${
+                  className={`text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold ${
                     isLightMode ? 'text-slate-600' : 'text-slate-400'
                   }`}
                 >
                   {language === 'hi' ? 'डिग्री' : language === 'en' ? 'Degree' : 'ಶಿಕ್ಷಣ'}
                 </div>
                 <div
-                  className={`text-base sm:text-lg font-bold mt-0.5 ${
+                  className={`text-sm sm:text-lg font-bold mt-0.5 ${
                     isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
                   }`}
                 >
                   MCA
                 </div>
                 <div
-                  className={`text-[10px] truncate ${
+                  className={`text-[9px] sm:text-[10px] truncate ${
                     isLightMode ? 'text-slate-500' : 'text-slate-400'
                   }`}
                 >
@@ -311,23 +315,23 @@ export default function HeroSection({
                 </div>
               </TiltCard>
 
-              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-3 text-center">
+              <TiltCard isIvory={isLightMode} maxTilt={6} className="p-2 sm:p-3 text-center">
                 <div
-                  className={`text-[11px] uppercase tracking-wider font-semibold ${
+                  className={`text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold ${
                     isLightMode ? 'text-slate-600' : 'text-slate-400'
                   }`}
                 >
                   {language === 'hi' ? 'कृषि भूमि' : language === 'en' ? 'Farmland' : 'ಕೃಷಿ ಭೂಮಿ'}
                 </div>
                 <div
-                  className={`text-base sm:text-lg font-bold font-mono mt-0.5 ${
+                  className={`text-sm sm:text-lg font-bold font-mono mt-0.5 ${
                     isLightMode ? 'text-[#855b0a]' : 'text-[#d4af37]'
                   }`}
                 >
                   13.10
                 </div>
                 <div
-                  className={`text-[10px] ${
+                  className={`text-[9px] sm:text-[10px] ${
                     isLightMode ? 'text-slate-500' : 'text-slate-400'
                   }`}
                 >
@@ -338,56 +342,61 @@ export default function HeroSection({
 
             {/* Quick Introduction Snippet */}
             <p
-              className={`text-sm sm:text-base leading-relaxed font-sans mb-8 max-w-2xl ${
+              className={`text-xs sm:text-base leading-relaxed font-sans mb-5 sm:mb-8 max-w-2xl ${
                 isLightMode ? 'text-slate-700 font-medium' : 'text-slate-300'
               }`}
             >
               {getBioSnippet()}
             </p>
 
-            {/* Action CTA Buttons */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            {/* Action CTA Buttons (Full-width on mobile, flex row on desktop) */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3.5">
+              {/* Direct WhatsApp Redirection CTA */}
               <a
-                href="#personal"
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-sm shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                href={`https://wa.me/919108080161?text=${getWhatsappMsg()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
               >
+                <MessageSquare className="w-4 h-4" />
                 <span>
                   {language === 'hi'
-                    ? 'संपूर्ण विवरण देखें'
+                    ? 'व्हाट्सएप पर बात करें (9108080161)'
                     : language === 'en'
-                    ? 'View Complete Profile'
-                    : 'ಸಂಪೂರ್ಣ ಪರಿಚಯ ನೋಡಿ'}
+                    ? 'Chat on WhatsApp (9108080161)'
+                    : 'WhatsApp ನಲ್ಲಿ ಸಂದೇಶ (9108080161)'}
                 </span>
-                <ChevronDown className="w-4 h-4" />
               </a>
 
-              <button
-                onClick={onOpenPdfModal}
-                className={`px-6 py-3 rounded-xl border font-bold text-sm shadow-md transition-all duration-200 flex items-center gap-2 cursor-pointer ${
-                  isLightMode
-                    ? 'bg-white hover:bg-amber-50 border-[#c59b27] text-[#855b0a]'
-                    : 'bg-white/5 hover:bg-white/10 border-[#d4af37]/60 text-[#f6e8b1]'
-                }`}
-              >
-                <FileDown className="w-4 h-4 text-[#d4af37]" />
-                <span>
-                  {language === 'hi' ? 'बायोडाटा PDF' : language === 'en' ? 'Download PDF' : 'PDF ಬಯೋಡೇಟಾ'}
-                </span>
-              </button>
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center">
+                <a
+                  href="#personal"
+                  className="py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs sm:text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <span>
+                    {language === 'hi'
+                      ? 'संपूर्ण विवरण'
+                      : language === 'en'
+                      ? 'View Profile'
+                      : 'ಸಂಪೂರ್ಣ ಪರಿಚಯ'}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </a>
 
-              <button
-                onClick={onOpenContact}
-                className={`px-5 py-3 rounded-xl border text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                  isLightMode
-                    ? 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
-                    : 'bg-[#0b203a]/80 hover:bg-[#0f2a4d] border-white/10 text-slate-200'
-                }`}
-              >
-                <PhoneCall className="w-4 h-4 text-[#d4af37]" />
-                <span>
-                  {language === 'hi' ? 'संपर्क करें' : language === 'en' ? 'Contact' : 'ಸಂಪರ್ಕಿಸಿ'}
-                </span>
-              </button>
+                <button
+                  onClick={onOpenPdfModal}
+                  className={`py-2.5 px-3.5 rounded-xl border font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    isLightMode
+                      ? 'bg-white hover:bg-amber-50 border-[#c59b27] text-[#855b0a]'
+                      : 'bg-white/5 hover:bg-white/10 border-[#d4af37]/60 text-[#f6e8b1]'
+                  }`}
+                >
+                  <FileDown className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span>
+                    {language === 'hi' ? 'PDF बायोडाटा' : language === 'en' ? 'Download PDF' : 'PDF ಬಯೋಡೇಟಾ'}
+                  </span>
+                </button>
+              </div>
             </div>
 
           </div>

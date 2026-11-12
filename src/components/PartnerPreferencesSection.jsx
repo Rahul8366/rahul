@@ -85,7 +85,7 @@ export default function PartnerPreferencesSection({ profile, language, isLightMo
   const getTag = (p) => (language === 'hi' ? p.tagHi : language === 'en' ? p.tagEn : p.tagKn);
 
   return (
-    <section id="preferences" className="py-20 relative">
+    <section id="preferences" className="py-12 sm:py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
