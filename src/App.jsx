@@ -30,6 +30,17 @@ export default function App() {
   const [isLightMode, setIsLightMode] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
+  // Synchronize body background with isLightMode
+  useEffect(() => {
+    if (isLightMode) {
+      document.body.classList.remove('bg-[#050e1a]', 'text-slate-100');
+      document.body.classList.add('bg-[#f7f3ea]', 'text-slate-900');
+    } else {
+      document.body.classList.remove('bg-[#f7f3ea]', 'text-slate-900');
+      document.body.classList.add('bg-[#050e1a]', 'text-slate-100');
+    }
+  }, [isLightMode]);
+
   // Modal States
   const [isPhotoEditorOpen, setIsPhotoEditorOpen] = useState(false);
   const [isProfileEditOpen, setIsProfileEditOpen] = useState(false);
