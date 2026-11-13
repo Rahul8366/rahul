@@ -1,78 +1,73 @@
 import React, { useState } from 'react';
-import { UserCheck, Mail, User, Phone, ShieldCheck, X, ArrowRight, Heart } from 'lucide-react';
+import { Phone, ShieldCheck, X, ArrowRight, Heart, Lock, AlertCircle } from 'lucide-react';
 import { visitorService } from '../services/visitorService';
-import { SignInButton } from '@clerk/clerk-react';
+import { SignInButton } from '@clerk/react';
 
-export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLightMode, language }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [relation, setRelation] = useState('Bride Family (ಹುಡುಗಿಯ ಕುಟುಂಬ)');
-  const [city, setCity] = useState('');
-  const [agreed, setAgreed] = useState(true);
+export default function VisitorGateModal({
+  isOpen,
+  onClose,
+  onVerified,
+  onGuestMode,
+  onOpenLegal,
+  isLightMode,
+  language,
+}) {
+  const [mobileNumber, setMobileNumber] = useState('');
   const [error, setError] = useState('');
-
-  let clerk = null;
-  try {
-    clerk = useClerk();
-  } catch (e) {}
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  // Validate Indian standard 10-digit mobile number starting with 6, 7, 8, 9
+  const validateIndianMobile = (number) => {
+    const clean = number.replace(/\D/g, '');
+    const indianRegex = /^[6-9]\d{9}$/;
+    return indianRegex.test(clean);
+  };
+
+  const handleMobileSubmit = (e) => {
     e.preventDefault();
-    if (!email || !email.includes('@')) {
+    const cleanNumber = mobileNumber.replace(/\D/g, '');
+
+    if (!cleanNumber) {
       setError(
         language === 'hi'
-          ? 'कृपया वैध ईमेल आईडी दर्ज करें।'
+          ? 'कृपया अपना 10-अंकों का मोबाइल नंबर दर्ज करें।'
           : language === 'en'
-          ? 'Please enter a valid email address.'
-          : 'ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಇಮೇಲ್ ಐಡಿ ನಮೂದಿಸಿ.'
+          ? 'Please enter your 10-digit mobile number.'
+          : 'ದಯವಿಟ್ಟು ನಿಮ್ಮ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.'
       );
       return;
     }
 
-    if (!name.trim()) {
+    if (!validateIndianMobile(cleanNumber)) {
       setError(
         language === 'hi'
-          ? 'कृपया अपना नाम दर्ज करें।'
+          ? 'मान्य भारतीय मोबाइल नंबर दर्ज करें (10 अंक, 6, 7, 8 या 9 से शुरू)।'
           : language === 'en'
-          ? 'Please enter your name.'
-          : 'ದಯವಿಟ್ಟು ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ.'
+          ? 'Enter a valid 10-digit Indian mobile number (starts with 6, 7, 8, or 9).'
+          : 'ಮಾನ್ಯವಾದ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (6, 7, 8 ಅಥವಾ 9 ರಿಂದ ಪ್ರಾರಂಭವಾಗಬೇಕು).'
       );
       return;
     }
 
+    // Register verified mobile visitor
     visitorService.registerVisitor({
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      relation,
-      city: city.trim(),
+      name: `Visitor (${cleanNumber})`,
+      email: `${cleanNumber}@mobile.in`,
+      phone: `+91 ${cleanNumber}`,
+      relation: 'Alliance Inquiry (ಮೊಬೈಲ್ ಪರಿಶೀಲಿತ)',
+      isVerified: true,
     });
 
+    if (onVerified) onVerified();
     onClose();
   };
 
-  const handleSkip = () => {
-    // If skipped, record as anonymous guest view
-    visitorService.registerVisitor({
-      name: 'Guest Visitor',
-      email: 'guest.' + Math.floor(Math.random() * 8999 + 1000) + '@visitor.temp',
-      phone: '',
-      relation: 'Browsing Guest',
-      city: 'Unknown Location',
-    });
+  const handleGuestClick = () => {
+    // If guest mode chosen, blur sensitive details and close gate
+    if (onGuestMode) onGuestMode();
     onClose();
   };
-
-  const inputClass = isLightMode
-    ? 'w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#c59b27] focus:ring-1 focus:ring-[#c59b27] outline-none shadow-sm'
-    : 'w-full bg-[#050f1d] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:border-[#d4af37] outline-none';
-
-  const labelClass = isLightMode
-    ? 'text-xs text-slate-700 font-bold block mb-1'
-    : 'text-xs text-slate-300 font-medium block mb-1';
 
   return (
     <div
@@ -81,15 +76,15 @@ export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLight
       }`}
     >
       <div
-        className={`relative w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl border transition-all ${
+        className={`relative w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border transition-all ${
           isLightMode
             ? 'bg-[#fbf9f4] border-2 border-[#c59b27]/60 text-slate-900 shadow-amber-950/15'
             : 'bg-[#08172c] border border-[#d4af37]/40 text-slate-100 shadow-black/80'
         }`}
       >
-        {/* Close Button */}
+        {/* Close / Guest Button */}
         <button
-          onClick={handleSkip}
+          onClick={handleGuestClick}
           className={`absolute top-5 right-5 p-2 rounded-full transition-colors cursor-pointer ${
             isLightMode
               ? 'hover:bg-black/5 text-slate-500 hover:text-slate-900'
@@ -102,13 +97,13 @@ export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLight
 
         {/* Header Icon & Title */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-full mx-auto mb-3 bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-950/30 flex items-center justify-center">
+          <div className="w-13 h-13 rounded-full mx-auto mb-3 bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-950/30 flex items-center justify-center">
             <div
               className={`w-full h-full rounded-full flex items-center justify-center ${
                 isLightMode ? 'bg-white text-[#855b0a]' : 'bg-[#071527] text-[#f6e8b1]'
               }`}
             >
-              <Heart className="w-7 h-7 text-[#d4af37] fill-[#d4af37]/30" />
+              <Heart className="w-6 h-6 text-[#d4af37] fill-[#d4af37]/30" />
             </div>
           </div>
 
@@ -118,40 +113,33 @@ export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLight
             }`}
           >
             {language === 'hi'
-              ? 'स्वागतम् • परिचय दर्ज करें'
+              ? 'स्वागतम् • परिचय सत्यापन'
               : language === 'en'
-              ? 'Welcome • Visitor Introduction'
-              : 'ನಮಸ್ಕಾರ • ಸಂದರ್ಶಕರ ಪರಿಚಯ'}
+              ? 'Welcome • Verification'
+              : 'ನಮಸ್ಕಾರ • ಸಂದರ್ಶಕರ ಪರಿಶೀಲನೆ'}
           </h3>
 
           <p
-            className={`text-xs mt-1.5 max-w-sm mx-auto font-medium ${
+            className={`text-xs mt-1.5 max-w-xs mx-auto font-medium ${
               isLightMode ? 'text-slate-600' : 'text-slate-300'
             }`}
           >
             {language === 'hi'
-              ? 'राहुल सुरेश बाळबट्टी के विवाह परिचय पत्र को देखने के लिए कृपया अपना नाम व ईमेल दर्ज करें।'
+              ? 'राहुल सुरेश बाळबट्टी के संपूर्ण विवाह विवरण देखने के लिए Google या मोबाइल नंबर से आगे बढ़ें:'
               : language === 'en'
-              ? "To view verified marriage details of Rahul Suresh Balabatti, please introduce yourself:"
-              : 'ರಾಹುಲ ಸುರೇಶ ಬಳಬಟ್ಟಿ ಅವರ ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ ವೀಕ್ಷಿಸಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ ಪರಿಚಯ ನಮೂದಿಸಿ:'}
+              ? 'To view verified family, horoscope, and contact details of Rahul Suresh Balabatti, please verify:'
+              : 'ರಾಹುಲ ಸುರೇಶ ಬಳಬಟ್ಟಿ ಅವರ ಸಂಪೂರ್ಣ ಕುಟುಂಬ, ಜಾತಕ ಮತ್ತು ಸಂಪರ್ಕ ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಪರಿಶೀಲಿಸಿ:'}
           </p>
         </div>
 
-        {/* Error Alert */}
-        {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 text-xs font-semibold text-center">
-            {error}
-          </div>
-        )}
-
-        {/* 1-Click Continue with Google powered by Clerk */}
+        {/* 1. Continue with Google (1-Click) */}
         <div className="mb-4">
           <SignInButton mode="modal">
             <button
               type="button"
-              className="w-full py-2.5 px-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs flex items-center justify-center gap-2.5 shadow-sm transition-all cursor-pointer hover:shadow"
+              className="w-full py-3 px-4 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md transition-all cursor-pointer hover:shadow-lg hover:border-slate-400 active:scale-[0.99]"
             >
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
@@ -161,184 +149,118 @@ export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLight
             </button>
           </SignInButton>
 
-          <div className="flex items-center gap-3 my-3">
-            <span className={`flex-1 h-[1px] ${isLightMode ? 'bg-slate-200' : 'bg-white/10'}`} />
-            <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">ಅಥವಾ / Or</span>
-            <span className={`flex-1 h-[1px] ${isLightMode ? 'bg-slate-200' : 'bg-white/10'}`} />
+          {/* Elegant Divider */}
+          <div className="flex items-center gap-3 my-4">
+            <span className={`flex-1 h-[1px] ${isLightMode ? 'bg-slate-300' : 'bg-white/15'}`} />
+            <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">
+              {language === 'hi' ? 'अथवा मोबाइल नंबर' : language === 'en' ? 'OR MOBILE NUMBER' : 'ಅಥವಾ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ'}
+            </span>
+            <span className={`flex-1 h-[1px] ${isLightMode ? 'bg-slate-300' : 'bg-white/15'}`} />
           </div>
         </div>
 
-        {/* Visitor Form */}
-        <form onSubmit={handleSubmit} className="space-y-3.5">
-          <div>
-            <label className={labelClass}>
-              {language === 'hi' ? 'आपका नाम (Full Name): *' : language === 'en' ? 'Your Name: *' : 'ನಿಮ್ಮ ಹೆಸರು: *'}
-            </label>
-            <div className="relative">
-              <User className="w-4 h-4 text-[#d4af37] absolute left-3.5 top-3" />
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  setError('');
-                }}
-                placeholder={language === 'hi' ? 'उदा. रमेश पाटील' : language === 'en' ? 'e.g. Ramesh Patil' : 'ಉದಾ. ರಮೇಶ್ ಪಾಟೀಲ್'}
-                className={`${inputClass} pl-10`}
-              />
-            </div>
+        {/* Error Alert */}
+        {error && (
+          <div className="mb-3.5 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 text-xs font-semibold flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
           </div>
+        )}
 
+        {/* 2. Indian Standard 10-Digit Mobile Form */}
+        <form onSubmit={handleMobileSubmit} className="space-y-3.5">
           <div>
-            <label className={labelClass}>
-              {language === 'hi' ? 'ईमेल आईडी (Email ID): *' : language === 'en' ? 'Email Address: *' : 'ಇಮೇಲ್ ಐಡಿ (Email): *'}
+            <label className={`text-xs font-bold block mb-1.5 ${isLightMode ? 'text-slate-700' : 'text-slate-200'}`}>
+              {language === 'hi'
+                ? '10-अंकों का मोबाइल नंबर (10-Digit Mobile):'
+                : language === 'en'
+                ? '10-Digit Mobile Number (India):'
+                : '10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (ಭಾರತ):'}
             </label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-[#d4af37] absolute left-3.5 top-3" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setError('');
-                }}
-                placeholder="name@example.com"
-                className={`${inputClass} pl-10`}
-              />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className={labelClass}>
-                {language === 'hi' ? 'मोबाइल (Mobile - Optional):' : language === 'en' ? 'Phone (Optional):' : 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (ಐಚ್ಛಿಕ):'}
-              </label>
-              <div className="relative">
-                <Phone className="w-4 h-4 text-[#d4af37] absolute left-3.5 top-3" />
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="9876543210"
-                  className={`${inputClass} pl-10`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className={labelClass}>
-                {language === 'hi' ? 'संबंध / उद्देश्य:' : language === 'en' ? 'Relation / Purpose:' : 'ಸಂಬಂಧ / ಉದ್ದೇಶ:'}
-              </label>
-              <select
-                value={relation}
-                onChange={(e) => setRelation(e.target.value)}
-                className={inputClass}
+            <div className="relative flex items-center">
+              {/* India Flag & +91 prefix */}
+              <div
+                className={`absolute left-3 flex items-center gap-1.5 text-xs font-bold font-mono border-r pr-2 select-none ${
+                  isLightMode ? 'border-slate-300 text-slate-700' : 'border-white/15 text-slate-300'
+                }`}
               >
-                <option value="Bride Family (ಹುಡುಗಿಯ ಕುಟುಂಬ)">Bride Family (ಹುಡುಗಿಯ ಕುಟುಂಬ)</option>
-                <option value="Relative / Mediator (ಸಂಬಂಧಿಕರು / ಮಧ್ಯಸ್ಥರು)">Relative / Mediator (ಸಂಬಂಧಿಕರು)</option>
-                <option value="Friend / Well-wisher (ಸ್ನೇಹಿತರು)">Friend (ಸ್ನೇಹಿತರು)</option>
-                <option value="Other Visitor">Other / General Alliance</option>
-              </select>
-            </div>
-          </div>
+                <span>🇮🇳</span>
+                <span>+91</span>
+              </div>
 
-          {/* Privacy & Legal Consent */}
-          <div className="pt-2">
-            <label className="flex items-start gap-2.5 text-xs cursor-pointer select-none">
               <input
-                type="checkbox"
-                checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
-                className="mt-0.5 rounded text-[#d4af37] focus:ring-[#d4af37]"
+                type="tel"
+                maxLength={10}
+                value={mobileNumber}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setMobileNumber(val);
+                  setError('');
+                }}
+                placeholder="9876543210"
+                className={`w-full rounded-2xl py-3 pl-20 pr-4 text-sm font-mono tracking-wider border outline-none font-bold ${
+                  isLightMode
+                    ? 'bg-white border-slate-300 text-slate-900 focus:border-[#c59b27] focus:ring-1 focus:ring-[#c59b27]'
+                    : 'bg-[#050f1d] border-white/15 text-slate-100 focus:border-[#d4af37]'
+                }`}
               />
-              <span className={isLightMode ? 'text-slate-600' : 'text-slate-400'}>
-                {language === 'hi' ? (
-                  <>
-                    मैं वैवाहिक संबंध हेतु{' '}
-                    <button
-                      type="button"
-                      onClick={() => onOpenLegal('privacy')}
-                      className="underline font-bold text-[#855b0a] hover:text-[#caa048]"
-                    >
-                      गोपनीयता नीति (Privacy Policy)
-                    </button>{' '}
-                    और{' '}
-                    <button
-                      type="button"
-                      onClick={() => onOpenLegal('terms')}
-                      className="underline font-bold text-[#855b0a] hover:text-[#caa048]"
-                    >
-                      नियम व शर्तों (Terms)
-                    </button>{' '}
-                    से सहमत हूँ।
-                  </>
-                ) : (
-                  <>
-                    ನಾನು ವಿವಾಹ ಸಂಬಂಧ ವಿಚಾರಣೆಗಾಗಿ{' '}
-                    <button
-                      type="button"
-                      onClick={() => onOpenLegal('privacy')}
-                      className="underline font-bold text-[#855b0a] hover:text-[#caa048]"
-                    >
-                      ಖಾಸಗಿತನ ನೀತಿ (Privacy Policy)
-                    </button>{' '}
-                    ಮತ್ತು{' '}
-                    <button
-                      type="button"
-                      onClick={() => onOpenLegal('terms')}
-                      className="underline font-bold text-[#855b0a] hover:text-[#caa048]"
-                    >
-                      ನಿಯಮಗಳನ್ನು (Terms)
-                    </button>{' '}
-                    ಒಪ್ಪುತ್ತೇನೆ.
-                  </>
-                )}
-              </span>
-            </label>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 pl-1">
+              {language === 'hi'
+                ? 'वैध 10 अंक जो 6, 7, 8 या 9 से शुरू हों।'
+                : language === 'en'
+                ? 'Must be 10 digits starting with 6, 7, 8, or 9.'
+                : '6, 7, 8 ಅಥವಾ 9 ರಿಂದ ಪ್ರಾರಂಭವಾಗುವ 10 ಅಂಕಿಗಳು.'}
+            </p>
           </div>
 
           {/* Submit Button */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center gap-2.5">
-            <button
-              type="submit"
-              disabled={!agreed}
-              className="w-full sm:flex-1 py-3 px-5 rounded-2xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-sm shadow-lg hover:brightness-105 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
-            >
-              <UserCheck className="w-4 h-4" />
-              <span>
-                {language === 'hi'
-                  ? 'प्रोफ़ाइल देखें • View Profile'
-                  : language === 'en'
-                  ? 'View Marriage Profile'
-                  : 'ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ ವೀಕ್ಷಿಸಿ'}
-              </span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleSkip}
-              className={`w-full sm:w-auto px-4 py-3 rounded-2xl border text-xs font-semibold transition-colors cursor-pointer ${
-                isLightMode
-                  ? 'border-slate-300 text-slate-600 hover:bg-slate-100'
-                  : 'border-white/10 text-slate-400 hover:bg-white/5'
-              }`}
-            >
-              {language === 'hi' ? 'अतिथि रूप में जारी रखें' : language === 'en' ? 'Continue as Guest' : 'ಅತಿಥಿಯಾಗಿ ಮುಂದುವರಿಯಿರಿ'}
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-3 px-5 rounded-2xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs sm:text-sm shadow-xl hover:brightness-105 flex items-center justify-center gap-2 transition-all cursor-pointer"
+          >
+            <span>
+              {language === 'hi'
+                ? 'सत्यापित करें एवं प्रोफ़ाइल देखें'
+                : language === 'en'
+                ? 'Submit & View Profile'
+                : 'ಸಲ್ಲಿಸಿ • ವಿವಾಹ ಪರಿಚಯ ಪತ್ರ ವೀಕ್ಷಿಸಿ'}
+            </span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </form>
 
-        {/* Security badge */}
+        {/* 3. Guest Mode Option (Blur details) */}
+        <div className="mt-4 pt-3 border-t text-center">
+          <button
+            type="button"
+            onClick={handleGuestClick}
+            className={`w-full py-2.5 px-4 rounded-xl border text-xs font-semibold transition-colors cursor-pointer flex items-center justify-center gap-1.5 ${
+              isLightMode
+                ? 'border-slate-300 text-slate-600 hover:bg-slate-100'
+                : 'border-white/10 text-slate-400 hover:bg-white/5'
+            }`}
+          >
+            <Lock className="w-3.5 h-3.5 opacity-60" />
+            <span>
+              {language === 'hi'
+                ? 'अतिथि मोड (सीमित दृश्य • Guest Mode)'
+                : language === 'en'
+                ? 'Continue in Guest Mode (Blurred Details)'
+                : 'ಅತಿಥಿ ವೀಕ್ಷಣೆ (ಮಿತಿ ವಿವರಗಳು • Guest Mode)'}
+            </span>
+          </button>
+        </div>
+
+        {/* Privacy Note */}
         <div
-          className={`mt-4 pt-3 border-t text-[11px] flex items-center justify-center gap-1.5 ${
-            isLightMode ? 'border-slate-200 text-slate-500' : 'border-white/5 text-slate-400'
+          className={`mt-3 text-[10px] text-center flex items-center justify-center gap-1.5 ${
+            isLightMode ? 'text-slate-500' : 'text-slate-400'
           }`}
         >
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>100% Confidential • Used exclusively for matrimonial communication</span>
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+          <span>100% Confidential • Used strictly for matrimonial alliance verification</span>
         </div>
       </div>
     </div>

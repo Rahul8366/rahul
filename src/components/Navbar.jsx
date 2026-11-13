@@ -8,8 +8,9 @@ import {
   Moon,
   Share2,
   Lock,
+  Globe,
 } from 'lucide-react';
-import { UserButton, SignedIn } from '@clerk/clerk-react';
+import { UserButton, useUser } from '@clerk/react';
 
 export default function Navbar({
   activeSection,
@@ -24,6 +25,12 @@ export default function Navbar({
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  let isSignedIn = false;
+  try {
+    const userHook = useUser();
+    isSignedIn = !!userHook?.isSignedIn;
+  } catch (e) {}
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,11 +141,11 @@ export default function Navbar({
           })}
         </div>
 
-        {/* Right Toolbar Controls (Optimized for Mobile) */}
+        {/* Right Toolbar Controls (Optimized to never overflow on Mobile) */}
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {/* 3-Language Selector Buttons */}
+          {/* Desktop/Tablet 3-Language Selector Buttons */}
           <div
-            className={`flex items-center p-0.5 rounded-lg sm:rounded-xl border ${
+            className={`hidden sm:flex items-center p-0.5 rounded-lg sm:rounded-xl border ${
               isLightMode
                 ? 'bg-[#ffffff] border-[#c59b27]/40'
                 : 'bg-[#08172c] border-[#d4af37]/35'
@@ -185,11 +192,28 @@ export default function Navbar({
             </button>
           </div>
 
+          {/* Mobile Compact Single-Tap Language Pill (Saves 80px space) */}
+          <button
+            onClick={() => {
+              const nextLang = language === 'kn' ? 'en' : language === 'en' ? 'hi' : 'kn';
+              setLanguage(nextLang);
+            }}
+            title="Switch Language (ಕನ್ನಡ / ENG / हिन्दी)"
+            className={`sm:hidden px-2 py-1 text-[11px] font-bold rounded-lg border transition-all cursor-pointer shrink-0 flex items-center gap-1 ${
+              isLightMode
+                ? 'bg-white border-[#c59b27]/50 text-[#855b0a] shadow-sm'
+                : 'bg-[#08172c] border-[#d4af37]/40 text-[#f6e8b1] shadow-sm'
+            }`}
+          >
+            <span>{language === 'kn' ? 'ಕನ್ನಡ' : language === 'en' ? 'ENG' : 'हिन्दी'}</span>
+            <span className="text-[9px] opacity-70">▾</span>
+          </button>
+
           {/* Theme Toggle */}
           <button
             onClick={() => setIsLightMode(!isLightMode)}
             title={isLightMode ? 'Dark Navy Luxury' : 'Light Royal Ivory'}
-            className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-colors cursor-pointer ${
+            className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-colors cursor-pointer shrink-0 ${
               isLightMode
                 ? 'bg-[#ffffff] border-[#c59b27]/40 text-[#855b0a] hover:bg-[#f6efe0]'
                 : 'bg-[#08172c] border-[#d4af37]/30 text-[#f6e8b1] hover:bg-[#d4af37]/10'
@@ -217,26 +241,27 @@ export default function Navbar({
           {/* Download PDF Button */}
           <button
             onClick={onOpenPdfModal}
-            className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-[11px] sm:text-xs shadow-md hover:brightness-105 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-[11px] sm:text-xs shadow-md hover:brightness-105 transition-all cursor-pointer shrink-0"
           >
             <FileDown className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            <span>PDF</span>
+            <span className="hidden xs:inline">PDF</span>
           </button>
 
           {/* Signed-in Google Avatar */}
-          <SignedIn>
-            <div className="flex items-center">
+          {isSignedIn && (
+            <div className="flex items-center shrink-0">
               <UserButton afterSignOutUrl="/" />
             </div>
-          </SignedIn>
+          )}
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger Menu Button - Fixed shrink-0 and guaranteed visible */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`xl:hidden p-1.5 sm:p-2 rounded-lg sm:rounded-xl border cursor-pointer ${
+            aria-label="Navigation Menu"
+            className={`xl:hidden p-1.5 sm:p-2 rounded-lg sm:rounded-xl border cursor-pointer shrink-0 z-20 ${
               isLightMode
                 ? 'bg-white border-[#c59b27]/40 text-[#855b0a]'
-                : 'border-[#d4af37]/30 text-[#f6e8b1] hover:bg-white/5'
+                : 'bg-[#08172c] border-[#d4af37]/30 text-[#f6e8b1] hover:bg-white/5'
             }`}
           >
             {mobileMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
@@ -253,6 +278,52 @@ export default function Navbar({
               : 'bg-[#071527]/98 text-slate-100 border-[#d4af37]/30 backdrop-blur-xl'
           }`}
         >
+          {/* Mobile Drawer Language Selector */}
+          <div
+            className={`flex items-center justify-between p-2 rounded-xl mb-4 border ${
+              isLightMode
+                ? 'bg-white border-[#c59b27]/30'
+                : 'bg-[#040e1c] border-[#d4af37]/25'
+            }`}
+          >
+            <span className="text-xs font-bold text-[#d4af37] flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5" />
+              <span>ಭಾಷೆ / Language:</span>
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setLanguage('kn')}
+                className={`px-2 py-1 text-xs font-bold rounded-lg ${
+                  language === 'kn'
+                    ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : 'text-slate-400'
+                }`}
+              >
+                ಕನ್ನಡ
+              </button>
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-1 text-xs font-bold rounded-lg ${
+                  language === 'en'
+                    ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : 'text-slate-400'
+                }`}
+              >
+                ENG
+              </button>
+              <button
+                onClick={() => setLanguage('hi')}
+                className={`px-2 py-1 text-xs font-bold rounded-lg ${
+                  language === 'hi'
+                    ? 'bg-gradient-to-r from-[#d4af37] to-[#aa771c] text-[#061220]'
+                    : 'text-slate-400'
+                }`}
+              >
+                हिन्दी
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-2 mb-4">
             {navLinks.map((link) => (
               <button

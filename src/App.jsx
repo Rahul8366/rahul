@@ -16,8 +16,9 @@ import PdfBiodataModal from './components/PdfBiodataModal';
 import VisitorGateModal from './components/VisitorGateModal';
 import AdminDashboardModal from './components/AdminDashboardModal';
 import LegalModal from './components/LegalModal';
+import LockedBlurOverlay from './components/LockedBlurOverlay';
 import { visitorService } from './services/visitorService';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import { ArrowUp, Share2, FileDown, Shield, Lock } from 'lucide-react';
 
 export default function App() {
@@ -54,6 +55,37 @@ export default function App() {
   const [isLegalOpen, setIsLegalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState('privacy');
 
+  // Guest Mode State: When guest mode is active, sensitive details are blurred
+  const [isGuestMode, setIsGuestMode] = useState(() => {
+    try {
+      const session = visitorService.getCurrentSession();
+      if (session) return false;
+      return localStorage.getItem('rahul_portal_guest_mode') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const handleVerifiedAccess = () => {
+    setIsGuestMode(false);
+    try {
+      localStorage.removeItem('rahul_portal_guest_mode');
+    } catch (e) {}
+    setIsVisitorGateOpen(false);
+  };
+
+  const handleGuestMode = () => {
+    setIsGuestMode(true);
+    try {
+      localStorage.setItem('rahul_portal_guest_mode', 'true');
+    } catch (e) {}
+    setIsVisitorGateOpen(false);
+  };
+
+  const handleRequireUnlock = () => {
+    setIsVisitorGateOpen(true);
+  };
+
   // Detect signed-in Google user via Clerk
   let authUser = null;
   try {
@@ -75,6 +107,10 @@ export default function App() {
           phone: authUser.primaryPhoneNumber?.phoneNumber || '',
           relation: 'Google Verified Alliance',
         });
+        setIsGuestMode(false);
+        try {
+          localStorage.removeItem('rahul_portal_guest_mode');
+        } catch (e) {}
         setIsVisitorGateOpen(false);
       }
     }
@@ -86,9 +122,10 @@ export default function App() {
     if (window.location.search.includes('admin') || window.location.hash.includes('admin')) {
       setIsAdminOpen(true);
     } else {
-      // Prompt visitor if no session has been registered yet
+      // Prompt visitor if no session has been registered yet and not in guest mode
       const session = visitorService.getCurrentSession();
-      if (!session) {
+      const guest = localStorage.getItem('rahul_portal_guest_mode') === 'true';
+      if (!session && !guest) {
         const timer = setTimeout(() => {
           setIsVisitorGateOpen(true);
         }, 1200);
@@ -98,6 +135,10 @@ export default function App() {
   }, []);
 
   const handleOpenPdf = () => {
+    if (isGuestMode) {
+      setIsVisitorGateOpen(true);
+      return;
+    }
     visitorService.logAction('DOWNLOAD_PDF');
     setIsPdfModalOpen(true);
   };
@@ -223,23 +264,45 @@ export default function App() {
           isLightMode={isLightMode}
         />
 
-        <FamilySection
-          profile={profile}
+        {/* Sensitive Matrimonial Sections Gated via LockedBlurOverlay */}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+        >
+          <FamilySection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
-        <AssetsSection
-          profile={profile}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+        >
+          <AssetsSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
-        <HoroscopeSection
-          profile={profile}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+        >
+          <HoroscopeSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
         <AboutMeSection
           profile={profile}
@@ -247,11 +310,18 @@ export default function App() {
           isLightMode={isLightMode}
         />
 
-        <ContactSection
-          profile={profile}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+        >
+          <ContactSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
       </main>
 
       {/* Luxury Footer */}
@@ -406,6 +476,8 @@ export default function App() {
       <VisitorGateModal
         isOpen={isVisitorGateOpen}
         onClose={() => setIsVisitorGateOpen(false)}
+        onVerified={handleVerifiedAccess}
+        onGuestMode={handleGuestMode}
         onOpenLegal={handleOpenLegal}
         isLightMode={isLightMode}
         language={language}
