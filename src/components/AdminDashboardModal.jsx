@@ -8,7 +8,6 @@ import {
   MessageSquare,
   Search,
   Download,
-  Trash2,
   RefreshCw,
   X,
   Mail,
@@ -84,20 +83,6 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
 
   const handleExport = () => {
     visitorService.exportCSV();
-  };
-
-  const handleResetData = () => {
-    if (window.confirm('ಸಂದರ್ಶಕರ ಲಾಗ್ ಮರುಹೊಂದಿಸಲು ಬಯಸುವಿರಾ? (Reset visitor logs to sample data?)')) {
-      const def = visitorService.resetToDefault();
-      setVisitors(def);
-    }
-  };
-
-  const handleClearAll = () => {
-    if (window.confirm('ಎಲ್ಲಾ ಲಾಗ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲು ಬಯಸುವಿರಾ? (Clear all logs?)')) {
-      visitorService.clearVisitors();
-      setVisitors([]);
-    }
   };
 
   // Filter visitors
@@ -307,28 +292,22 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
 
               <div className="flex items-center gap-2">
                 <button
+                  onClick={loadVisitors}
+                  disabled={isSyncing}
+                  className="px-3 py-2 rounded-xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 text-xs font-semibold text-[#855b0a] flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Refresh Cloud Data"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-[#d4af37]' : ''}`} />
+                  <span className="hidden sm:inline">ರಿಫ್ರೆಶ್ • Sync</span>
+                </button>
+
+                <button
                   onClick={handleExport}
                   className="px-3.5 py-2 rounded-xl bg-[#d4af37]/20 border border-[#d4af37]/60 text-xs font-bold text-[#855b0a] hover:bg-[#d4af37]/30 flex items-center gap-1.5 transition-colors cursor-pointer"
                   title="Download CSV Spreadsheet"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export CSV</span>
-                </button>
-
-                <button
-                  onClick={handleResetData}
-                  className="p-2 rounded-xl border border-slate-300 hover:bg-black/5 text-slate-500 transition-colors cursor-pointer"
-                  title="Reset to Sample Data"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </button>
-
-                <button
-                  onClick={handleClearAll}
-                  className="p-2 rounded-xl border border-red-300 text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
-                  title="Clear All Logs"
-                >
-                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
