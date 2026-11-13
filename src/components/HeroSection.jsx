@@ -305,25 +305,6 @@ export default function HeroSection({
                     : 'ಫೋಟೋ ಬದಲಾಯಿಸಲು ರೌಂಡ್ ಐಕಾನ್ ಒತ್ತಿ • 3D ಟಚ್ ಸಕ್ರಿಯ'}
                 </div>
               </div>
-
-              {/* Subtitle pill below photo with clean spacing (NO overlap) */}
-              <div className="mt-3 text-center px-1">
-                <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs border font-medium ${
-                    isLightMode
-                      ? 'bg-white border-[#c59b27]/40 text-[#855b0a] shadow-sm'
-                      : 'bg-[#061426]/85 border-[#d4af37]/35 text-[#f6e8b1]'
-                  }`}
-                >
-                  <span>
-                    {language === 'hi'
-                      ? `${assets.communityHi} • 13.10 एकड़`
-                      : language === 'en'
-                      ? `${assets.communityEn} • 13.10 Acres`
-                      : `${assets.communityKn} • 13.10 ಎಕರೆ`}
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
 
