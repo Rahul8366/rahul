@@ -24,6 +24,42 @@ export default function VisitorGateModal({
     return indianRegex.test(clean);
   };
 
+  // Block fake, dummy, repeating, or sequential numbers (e.g. 9999999999, 9876543210, etc.)
+  const isDummyOrFakeMobile = (num) => {
+    if (!num || num.length !== 10) return true;
+
+    // 1. All identical digits e.g. 9999999999, 8888888888, 7777777777
+    if (/^(\d)\1{9}$/.test(num)) return true;
+
+    // 2. Only 1 or 2 unique digits e.g. 9898989898, 9090909090, 9999988888
+    const unique = new Set(num.split(''));
+    if (unique.size <= 2) return true;
+
+    // 3. 5 or more identical digits in a row e.g. 9999912345, 9879999999
+    if (/(\d)\1{4,}/.test(num)) return true;
+
+    // 4. Sequential patterns e.g. 0123456789, 1234567890, 9876543210, 8765432109
+    const sequential = ['0123456789', '1234567890', '9876543210', '8765432109', '9876501234'];
+    if (sequential.some((s) => s === num || s.includes(num))) return true;
+
+    // 5. Block known test/dummy numbers
+    const blocked = [
+      '9876543210',
+      '1234567890',
+      '9123456789',
+      '9876598765',
+      '1234512345',
+      '9000000000',
+      '8000000000',
+      '7000000000',
+      '6000000000',
+      '9876512345',
+    ];
+    if (blocked.includes(num)) return true;
+
+    return false;
+  };
+
   const handleMobileSubmit = (e) => {
     e.preventDefault();
     const cleanNumber = mobileNumber.replace(/\D/g, '');
@@ -46,6 +82,17 @@ export default function VisitorGateModal({
           : language === 'en'
           ? 'Enter a valid 10-digit Indian mobile number (starts with 6, 7, 8, or 9).'
           : 'ಮಾನ್ಯವಾದ 10-ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (6, 7, 8 ಅಥವಾ 9 ರಿಂದ ಪ್ರಾರಂಭವಾಗಬೇಕು).'
+      );
+      return;
+    }
+
+    if (isDummyOrFakeMobile(cleanNumber)) {
+      setError(
+        language === 'hi'
+          ? 'कृपया अपना वास्तविक मोबाइल नंबर दर्ज करें (डमी या लगातार नंबर जैसे 9999999999 ಅಥವಾ 9876543210 स्वीकार्य नहीं हैं)।'
+          : language === 'en'
+          ? 'Please enter a genuine mobile number (dummy or continuous numbers like 9999999999 or 9876543210 are not allowed).'
+          : 'ದಯವಿಟ್ಟು ನಿಮ್ಮ ನೈಜ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ (9999999999 ಅಥವಾ 9876543210 ನಂತಹ ಡಮ್ಮಿ ಸಂಖ್ಯೆಗಳನ್ನು ಅನುಮತಿಸಲಾಗುವುದಿಲ್ಲ).'
       );
       return;
     }
@@ -198,7 +245,13 @@ export default function VisitorGateModal({
                   setMobileNumber(val);
                   setError('');
                 }}
-                placeholder="9876543210"
+                placeholder={
+                  language === 'hi'
+                    ? 'अपना 10-अंकों का नंबर दर्ज करें'
+                    : language === 'en'
+                    ? 'Enter 10-digit mobile number'
+                    : 'ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ'
+                }
                 className={`w-full rounded-2xl py-3 pl-20 pr-4 text-sm font-mono tracking-wider border outline-none font-bold ${
                   isLightMode
                     ? 'bg-white border-slate-300 text-slate-900 focus:border-[#c59b27] focus:ring-1 focus:ring-[#c59b27]'
