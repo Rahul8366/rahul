@@ -149,8 +149,11 @@ export default function VisitorGateModal({ isOpen, onClose, onOpenLegal, isLight
           <button
             type="button"
             onClick={() => {
-              const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-              if (clerkKey && window.Clerk) {
+              if (clerk && clerk.openSignIn) {
+                clerk.openSignIn({
+                  strategy: 'oauth_google',
+                });
+              } else if (typeof window !== 'undefined' && window.Clerk && window.Clerk.openSignIn) {
                 window.Clerk.openSignIn({
                   strategy: 'oauth_google',
                 });
