@@ -455,7 +455,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
             isLightMode ? 'border-[#c59b27]/25' : 'border-[#d4af37]/20'
           }`}
         >
-          <span>Confidential Matrimonial Portal • Rahul Suresh Balabatti</span>
+          <span>Confidential Marriage Portal • Rahul Suresh Balabatti</span>
           {isAuthenticated && (
             <button
               onClick={() => setIsAuthenticated(false)}

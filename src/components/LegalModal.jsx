@@ -46,7 +46,7 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', is
                   : 'ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು • Terms & Conditions'}
               </h3>
               <p className={`text-xs ${isLightMode ? 'text-slate-600' : 'text-slate-400'}`}>
-                Official Matrimonial Profile of Rahul Suresh Balabatti.
+                Official Marriage Profile of Rahul Suresh Balabatti.
               </p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', is
 
               <section className="space-y-1.5">
                 <h4 className={`font-bold font-cinzel text-sm ${isLightMode ? 'text-[#855b0a]' : 'text-[#f6e8b1]'}`}>
-                  1. ಸದ್ಭಾವನೆಯ ಬಳಕೆ (Authentic Matrimonial Usage)
+                  1. ಸದ್ಭಾವನೆಯ ಬಳಕೆ (Authentic Marriage Usage)
                 </h4>
                 <p>
                   ಈ ಜಾಲತಾಣದಲ್ಲಿ ನೀಡಿರುವ ರಾಹುಲ ಸುರೇಶ ಬಳಬಟ್ಟಿ ಅವರ ಶಿಕ್ಷಣ, ಉದ್ಯೋಗ, ಕುಟುಂಬ ಹಾಗೂ ಜಾತಕ ವಿವರಗಳನ್ನು ಕೇವಲ ವಿವಾಹ ಸಂಬಂಧದ ಆಲೋಚನೆಗಾಗಿ ಮಾತ್ರ ವೀಕ್ಷಿಸಬೇಕು.
@@ -208,7 +208,7 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', is
         >
           <div className="flex items-center gap-1.5 text-xs text-slate-500">
             <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Verified Matrimonial Document • Kalaburagi / Bengaluru, Karnataka</span>
+            <span>Verified Marriage Document • Kalaburagi / Bengaluru, Karnataka</span>
           </div>
 
           <button

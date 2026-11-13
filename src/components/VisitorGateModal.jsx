@@ -260,7 +260,7 @@ export default function VisitorGateModal({
           }`}
         >
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-          <span>100% Confidential • Used strictly for matrimonial alliance verification</span>
+          <span>100% Confidential • Used strictly for marriage alliance verification</span>
         </div>
       </div>
     </div>

@@ -252,19 +252,47 @@ export default function App() {
           onOpenPdfModal={handleOpenPdf}
         />
 
-        <PersonalDetailsSection
-          profile={profile}
+        {/* Sensitive Profile Sections Gated via LockedBlurOverlay in Guest Mode */}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+          title={
+            language === 'hi'
+              ? 'व्यक्तिगत विवरण • सत्यापन आवश्यक'
+              : language === 'en'
+              ? 'Personal Details • Verification Required'
+              : 'ವೈಯಕ್ತಿಕ ವಿವರಗಳು • ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ'
+          }
+        >
+          <PersonalDetailsSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
-        <EducationProfessionSection
-          profile={profile}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+          title={
+            language === 'hi'
+              ? 'शिक्षा एवं व्यवसाय विवरण • सत्यापन आवश्यक'
+              : language === 'en'
+              ? 'Education & Profession Details • Verification Required'
+              : 'ಶಿಕ್ಷಣ ಮತ್ತು ಉದ್ಯೋಗ ವಿವರಗಳು • ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ'
+          }
+        >
+          <EducationProfessionSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
-        {/* Sensitive Matrimonial Sections Gated via LockedBlurOverlay */}
         <LockedBlurOverlay
           isLocked={isGuestMode}
           onUnlock={handleRequireUnlock}
@@ -304,11 +332,18 @@ export default function App() {
           />
         </LockedBlurOverlay>
 
-        <AboutMeSection
-          profile={profile}
+        <LockedBlurOverlay
+          isLocked={isGuestMode}
+          onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
-        />
+        >
+          <AboutMeSection
+            profile={profile}
+            language={language}
+            isLightMode={isLightMode}
+          />
+        </LockedBlurOverlay>
 
         <LockedBlurOverlay
           isLocked={isGuestMode}
