@@ -55,14 +55,16 @@ export default function App() {
   const [isLegalOpen, setIsLegalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState('privacy');
 
-  // Guest Mode State: When guest mode is active, sensitive details are blurred
+  // Guest Mode State: All sensitive details are blurred by default until verified
   const [isGuestMode, setIsGuestMode] = useState(() => {
     try {
       const session = visitorService.getCurrentSession();
-      if (session) return false;
-      return localStorage.getItem('rahul_portal_guest_mode') === 'true';
+      if (session && (session.isVerified || session.phone || session.email)) {
+        return false;
+      }
+      return true;
     } catch (e) {
-      return false;
+      return true;
     }
   });
 
@@ -337,6 +339,13 @@ export default function App() {
           onUnlock={handleRequireUnlock}
           language={language}
           isLightMode={isLightMode}
+          title={
+            language === 'hi'
+              ? 'व्यक्तिगत विचार एवं रुचियाँ • सत्यापन आवश्यक'
+              : language === 'en'
+              ? 'Personal Statement & Hobbies • Verification Required'
+              : 'ವೈಯಕ್ತಿಕ ಹೇಳಿಕೆ ಹಾಗೂ ಹವ್ಯಾಸಗಳು • ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ'
+          }
         >
           <AboutMeSection
             profile={profile}
