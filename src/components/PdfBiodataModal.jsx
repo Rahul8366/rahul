@@ -116,6 +116,12 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
     return family.fatherNameKn || family.fatherNameEn;
   };
 
+  const getFatherOccupation = () => {
+    if (selectedLang === 'hi') return family.fatherOccupationHi || 'शिक्षक';
+    if (selectedLang === 'en') return family.fatherOccupationEn || 'Teacher';
+    return family.fatherOccupationKn || 'ಶಿಕ್ಷಕರು';
+  };
+
   const getMother = () => {
     if (selectedLang === 'hi') return family.motherNameHi || family.motherNameEn || family.motherNameKn;
     if (selectedLang === 'en') return family.motherNameEn || family.motherNameKn;
@@ -477,7 +483,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
                         <span className="text-slate-600 font-medium">
                           {selectedLang === 'hi' ? 'पिता' : selectedLang === 'en' ? 'Father' : 'ತಂದೆ'}
                         </span>
-                        <span className="font-bold">: {getFather()}</span>
+                        <span className="font-bold">: {getFather()} ({getFatherOccupation()})</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600 font-medium">
