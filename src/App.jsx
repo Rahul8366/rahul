@@ -172,11 +172,38 @@ export default function App() {
   };
 
   // Live session photo adjust: Updates current screen & PDF download dynamically
-  const handleSavePhoto = (photoSettings) => {
-    setProfile((prev) => ({
-      ...prev,
-      photo: photoSettings,
-    }));
+  const handleSavePhoto = (photoData) => {
+    setProfile((prev) => {
+      if (photoData.photos) {
+        const activeIdx = photoData.activePhotoIndex ?? prev.activePhotoIndex ?? 0;
+        return {
+          ...prev,
+          photos: photoData.photos,
+          activePhotoIndex: activeIdx,
+          photo: photoData.photos[activeIdx] || photoData.photo || prev.photo,
+        };
+      }
+      const photos = prev.photos ? [...prev.photos] : [{ ...prev.photo }];
+      const activeIdx = prev.activePhotoIndex ?? 0;
+      photos[activeIdx] = { ...photos[activeIdx], ...photoData };
+      return {
+        ...prev,
+        photos,
+        photo: photos[activeIdx],
+      };
+    });
+  };
+
+  const handleSelectPhotoIndex = (index) => {
+    setProfile((prev) => {
+      const photos = prev.photos && prev.photos.length > 0 ? prev.photos : [prev.photo];
+      const validIndex = Math.max(0, Math.min(index, photos.length - 1));
+      return {
+        ...prev,
+        activePhotoIndex: validIndex,
+        photo: photos[validIndex] || prev.photo,
+      };
+    });
   };
 
   // Section Observer for Navbar Active State
@@ -270,6 +297,7 @@ export default function App() {
           isGuestMode={isGuestMode}
           onOpenPhotoEditor={handleOpenPhotoEditor}
           onOpenPdfModal={handleOpenPdf}
+          onSelectPhotoIndex={handleSelectPhotoIndex}
         />
 
         {/* Sensitive Profile Sections Gated via LockedBlurOverlay in Guest Mode */}
@@ -515,7 +543,10 @@ export default function App() {
         isOpen={isPhotoEditorOpen}
         onClose={() => setIsPhotoEditorOpen(false)}
         photoSettings={profile.photo}
+        photos={profile.photos}
+        activePhotoIndex={profile.activePhotoIndex}
         onSavePhoto={handleSavePhoto}
+        onSelectPhotoIndex={handleSelectPhotoIndex}
         isLightMode={isLightMode}
       />
 
