@@ -72,7 +72,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
       setPinError('');
       loadVisitors();
     } else {
-      setPinError('ತಪ್ಪಾದ ಪಾಸ್‌ವರ್ಡ್! (Incorrect Password. Use 01081999)');
+      setPinError('ತಪ್ಪಾದ ಪಾಸ್‌ವರ್ಡ್! (Incorrect Password)');
     }
   };
 
@@ -194,7 +194,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
               ಪ್ರವೇಶ ಪರಿಶೀಲನೆ • Enter Admin Password
             </h4>
             <p className={`text-xs mb-6 ${isLightMode ? 'text-slate-600' : 'text-slate-400'}`}>
-              Please enter your secret admin password (01081999) to unlock visitor details.
+              Please enter your secret admin password (Date of Birth) to unlock visitor details.
             </p>
 
             <form onSubmit={handleLogin} className="w-full space-y-4">
@@ -207,7 +207,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
                   setPin(e.target.value);
                   setPinError('');
                 }}
-                placeholder="Enter Password (01081999)"
+                placeholder="ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ • Enter Password"
                 className={`w-full text-center text-lg tracking-widest font-mono rounded-2xl py-3 border outline-none ${
                   isLightMode
                     ? 'bg-white border-slate-300 text-slate-900 focus:border-[#c59b27]'
@@ -226,7 +226,7 @@ export default function AdminDashboardModal({ isOpen, onClose, isLightMode }) {
               </button>
 
               <p className="text-[11px] text-slate-500">
-                Authorized for Rahul Balabatti • Protected with Convex & Clerk Security.
+                Authorized for Rahul Balabatti • Hint: Date of Birth (DDMMYYYY)
               </p>
             </form>
           </div>
