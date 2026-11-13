@@ -37,9 +37,9 @@ export default function LockedBlurOverlay({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl group my-4">
-      {/* Blurred Underlying Content */}
-      <div className="filter blur-xl select-none pointer-events-none opacity-15 transition-all duration-300">
+    <div className="relative overflow-hidden rounded-3xl group my-3">
+      {/* Blurred Underlying Content with bounded height to avoid excessive scroll gap */}
+      <div className="filter blur-xl select-none pointer-events-none opacity-15 transition-all duration-300 max-h-[300px] sm:max-h-[350px] overflow-hidden">
         {children}
       </div>
 

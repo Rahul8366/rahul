@@ -126,7 +126,7 @@ export default function HeroSection({
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] pt-16 sm:pt-24 pb-12 sm:pb-16 flex items-center justify-center overflow-hidden"
+      className="relative min-h-[85vh] pt-16 sm:pt-20 pb-6 sm:pb-8 flex items-center justify-center overflow-hidden"
     >
       {/* Background radial gold glow */}
       <div
@@ -138,7 +138,7 @@ export default function HeroSection({
       />
 
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 items-center">
           
           {/* LEFT: 3D HERO PROFILE PHOTO (Centerpiece with 3D Touch & Round Photo Selector) */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center">
@@ -380,7 +380,7 @@ export default function HeroSection({
             </div>
 
             {/* 3D Key Highlight Info Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-3 sm:my-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 my-2.5 sm:my-4">
               <TiltCard isIvory={isLightMode} maxTilt={6} className="p-2 sm:p-3 text-center">
                 <div
                   className={`text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold ${

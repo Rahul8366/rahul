@@ -416,7 +416,7 @@ export default function App() {
 
       {/* Luxury Footer */}
       <footer
-        className={`relative z-10 py-12 text-center transition-colors border-t ${
+        className={`relative z-10 py-8 sm:py-10 text-center transition-colors border-t ${
           isLightMode
             ? 'bg-[#f3ede0] border-[#c59b27]/40 text-slate-700'
             : 'bg-[#040b15]/95 border-[#d4af37]/30 text-slate-400'

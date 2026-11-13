@@ -78,11 +78,11 @@ export default function AssetsSection({ profile, language, isLightMode }) {
   const getDesc = (c) => (language === 'hi' ? c.descHi : language === 'en' ? c.descEn : c.descKn);
 
   return (
-    <section id="assets" className="py-12 sm:py-20 relative">
+    <section id="assets" className="py-6 sm:py-10 md:py-12 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border mb-3 ${
               isLightMode
@@ -115,7 +115,7 @@ export default function AssetsSection({ profile, language, isLightMode }) {
         </div>
 
         {/* Assets Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {cards.map((c, idx) => {
             const Icon = c.icon;
             return (

@@ -1,9 +1,11 @@
-import React from 'react';
-import { Users, Home, Shield } from 'lucide-react';
+import React, { useState } from 'react';
+import { Users, Home, Shield, GitFork } from 'lucide-react';
 import TiltCard from './TiltCard';
+import FamilyTree from './FamilyTree';
 
 export default function FamilySection({ profile, language, isLightMode }) {
   const { family } = profile;
+  const [activeView, setActiveView] = useState('tree');
 
   const familyMembers = [
     {
@@ -56,11 +58,11 @@ export default function FamilySection({ profile, language, isLightMode }) {
   const getDesc = (m) => (language === 'hi' ? m.descHi : language === 'en' ? m.descEn : m.descKn);
 
   return (
-    <section id="family" className="py-12 sm:py-20 relative">
+    <section id="family" className="py-6 sm:py-10 md:py-12 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-6">
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border mb-3 ${
               isLightMode
@@ -103,61 +105,120 @@ export default function FamilySection({ profile, language, isLightMode }) {
           <div className="h-1 w-20 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mt-3" />
         </div>
 
-        {/* Family Members Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {familyMembers.map((member, idx) => (
-            <TiltCard
-              key={idx}
-              isIvory={isLightMode}
-              maxTilt={6}
-              className="p-6 text-center group"
+        {/* View Switcher Toggle (Family Tree vs Card View) */}
+        <div className="flex items-center justify-center mb-5 sm:mb-6">
+          <div
+            className={`inline-flex p-1.5 rounded-full border shadow-sm transition-all ${
+              isLightMode
+                ? 'bg-amber-50/80 border-amber-300/60'
+                : 'bg-[#061426]/90 border-amber-400/25'
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setActiveView('tree')}
+              className={`flex items-center gap-2 px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
+                activeView === 'tree'
+                  ? 'bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#0b172a] shadow-md shadow-amber-500/30'
+                  : isLightMode
+                  ? 'text-slate-700 hover:text-slate-900'
+                  : 'text-slate-300 hover:text-white'
+              }`}
             >
-              <div className="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-950/40">
-                <div
-                  className={`w-full h-full rounded-full flex items-center justify-center ${
-                    isLightMode ? 'bg-[#ffffff]' : 'bg-[#071527]'
+              <GitFork className="w-4 h-4 rotate-180" />
+              <span>
+                {language === 'hi'
+                  ? 'पारिवारिक वंशावली'
+                  : language === 'en'
+                  ? 'Family Tree'
+                  : 'ಕೌಟುಂಬಿಕ ವಂಶವೃಕ್ಷ'}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveView('cards')}
+              className={`flex items-center gap-2 px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 ${
+                activeView === 'cards'
+                  ? 'bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#0b172a] shadow-md shadow-amber-500/30'
+                  : isLightMode
+                  ? 'text-slate-700 hover:text-slate-900'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              <span>
+                {language === 'hi'
+                  ? 'कार्ड दृश्य'
+                  : language === 'en'
+                  ? 'Card View'
+                  : 'ಕಾರ್ಡ್ ನೋಟ'}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Dynamic View: Tree or Cards */}
+        {activeView === 'tree' ? (
+          <div className="mb-6 sm:mb-8 animate-fadeIn">
+            <FamilyTree profile={profile} language={language} isLightMode={isLightMode} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8 animate-fadeIn">
+            {familyMembers.map((member, idx) => (
+              <TiltCard
+                key={idx}
+                isIvory={isLightMode}
+                maxTilt={6}
+                className="p-6 text-center group"
+              >
+                <div className="w-16 h-16 rounded-full mx-auto mb-4 bg-gradient-to-tr from-[#997424] via-[#f6e8b1] to-[#b38728] p-[1.5px] shadow-lg shadow-amber-950/40">
+                  <div
+                    className={`w-full h-full rounded-full flex items-center justify-center ${
+                      isLightMode ? 'bg-[#ffffff]' : 'bg-[#071527]'
+                    }`}
+                  >
+                    <Users className="w-7 h-7 text-[#d4af37]" />
+                  </div>
+                </div>
+
+                <span
+                  className={`text-xs uppercase tracking-widest font-bold ${
+                    isLightMode ? 'text-slate-600' : 'text-slate-400'
                   }`}
                 >
-                  <Users className="w-7 h-7 text-[#d4af37]" />
+                  {getRole(member)}
+                </span>
+
+                <h4
+                  className={`text-xl font-bold mt-1 transition-colors ${
+                    isLightMode ? 'text-[#0b172a]' : 'text-[#fbf5b7] group-hover:text-white'
+                  }`}
+                >
+                  {getName(member)}
+                </h4>
+
+                <div
+                  className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold border ${
+                    isLightMode
+                      ? 'bg-[#c59b27]/15 border-[#c59b27]/40 text-[#855b0a]'
+                      : 'bg-[#d4af37]/15 border-[#d4af37]/30 text-[#f6e8b1]'
+                  }`}
+                >
+                  {getOcc(member)}
                 </div>
-              </div>
 
-              <span
-                className={`text-xs uppercase tracking-widest font-bold ${
-                  isLightMode ? 'text-slate-600' : 'text-slate-400'
-                }`}
-              >
-                {getRole(member)}
-              </span>
-
-              <h4
-                className={`text-xl font-bold mt-1 transition-colors ${
-                  isLightMode ? 'text-[#0b172a]' : 'text-[#fbf5b7] group-hover:text-white'
-                }`}
-              >
-                {getName(member)}
-              </h4>
-
-              <div
-                className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold border ${
-                  isLightMode
-                    ? 'bg-[#c59b27]/15 border-[#c59b27]/40 text-[#855b0a]'
-                    : 'bg-[#d4af37]/15 border-[#d4af37]/30 text-[#f6e8b1]'
-                }`}
-              >
-                {getOcc(member)}
-              </div>
-
-              <p
-                className={`text-xs mt-3 pt-3 border-t font-medium ${
-                  isLightMode ? 'border-slate-200 text-slate-600' : 'border-white/5 text-slate-400'
-                }`}
-              >
-                {getDesc(member)}
-              </p>
-            </TiltCard>
-          ))}
-        </div>
+                <p
+                  className={`text-xs mt-3 pt-3 border-t font-medium ${
+                    isLightMode ? 'border-slate-200 text-slate-600' : 'border-white/5 text-slate-400'
+                  }`}
+                >
+                  {getDesc(member)}
+                </p>
+              </TiltCard>
+            ))}
+          </div>
+        )}
 
         {/* Additional Family Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

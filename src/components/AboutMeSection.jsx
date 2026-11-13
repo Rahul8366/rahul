@@ -51,11 +51,11 @@ export default function AboutMeSection({ profile, language, isLightMode }) {
   const getHDesc = (h) => (language === 'hi' ? h.descHi : language === 'en' ? h.descEn : h.descKn);
 
   return (
-    <section id="aboutme" className="py-12 sm:py-20 relative">
+    <section id="aboutme" className="py-6 sm:py-10 md:py-12 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border mb-3 ${
               isLightMode
