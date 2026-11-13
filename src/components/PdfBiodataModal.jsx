@@ -19,23 +19,33 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
 
     try {
       const element = cardRef.current;
+      
+      // 300 DPI Ultra-HD capture with virtual 1280px viewport so mobile phones get crystal-clear output
       const canvas = await html2canvas(element, {
-        scale: 2.2,
+        scale: 3,
         useCORS: true,
+        allowTaint: true,
         backgroundColor: '#071527',
+        windowWidth: 1280,
+        width: 920,
+        height: 620,
+        scrollX: 0,
+        scrollY: 0,
+        logging: false,
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4',
+        compress: true,
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
       pdf.save(`Rahul_Suresh_Balabatti_Marriage_Profile_${selectedLang.toUpperCase()}.pdf`);
 
       confetti({
@@ -204,9 +214,9 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
         }`}
       >
         
-        {/* Modal Controls Header */}
+        {/* Modal Controls Header (Hidden on Print) */}
         <div
-          className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-between pb-3 mb-3 border-b gap-3 shrink-0 ${
+          className={`no-print flex flex-col sm:flex-row items-stretch sm:items-center justify-between pb-3 mb-3 border-b gap-3 shrink-0 ${
             isLightMode ? 'border-[#c59b27]/25' : 'border-[#d4af37]/20'
           }`}
         >
@@ -217,14 +227,14 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
               }`}
             >
               <FileText className="w-5 h-5 text-[#d4af37]" />
-              <span>ವಿವಾಹ ಬಯೋಡೇಟಾ ಡೌನ್‌ಲೋಡ್ • Marriage Profile</span>
+              <span>ವಿವಾಹ ಬಯೋಡೇಟಾ • Marriage Biodata</span>
             </h3>
             <p
               className={`text-[11px] sm:text-xs font-medium ${
                 isLightMode ? 'text-slate-600' : 'text-slate-400'
               }`}
             >
-              Shows your live edited template. Ready to download or print.
+              HD Print & Download ready • A4 Landscape Template
             </p>
           </div>
 
@@ -275,14 +285,15 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
 
             <button
               onClick={handlePrint}
-              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl border flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer shadow-sm ${
                 isLightMode
-                  ? 'border-slate-300 text-slate-700 hover:bg-slate-100'
-                  : 'border-white/20 text-slate-300 hover:bg-white/10'
+                  ? 'border-[#c59b27] bg-white text-[#855b0a] hover:bg-amber-50'
+                  : 'border-[#d4af37]/60 bg-white/5 text-[#f6e8b1] hover:bg-white/10'
               }`}
-              title="Print"
+              title="Print Biodata"
             >
-              <Printer className="w-4 h-4" />
+              <Printer className="w-4 h-4 text-[#d4af37]" />
+              <span>ಪ್ರಿಂಟ್ (Print)</span>
             </button>
 
             <button
@@ -291,7 +302,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
               className="px-3.5 py-1.5 bg-gradient-to-r from-[#d4af37] via-[#f3e5ab] to-[#aa771c] text-[#061220] font-bold text-xs rounded-xl shadow-lg hover:brightness-110 flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
             >
               <Download className="w-4 h-4" />
-              <span>{isGenerating ? 'ಸಿದ್ಧವಾಗುತ್ತಿದೆ...' : 'PDF ಡೌನ್‌ಲೋಡ್'}</span>
+              <span>{isGenerating ? 'ಸಿದ್ಧವಾಗುತ್ತಿದೆ...' : 'HD PDF ಡೌನ್‌ಲೋಡ್'}</span>
             </button>
 
             <button
@@ -305,6 +316,11 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
               <X className="w-5 h-5" />
             </button>
           </div>
+        </div>
+
+        {/* Responsive Mobile Hint */}
+        <div className="no-print sm:hidden text-center text-[10px] text-amber-300/80 mb-2 font-medium">
+          👉 ಪೂರ್ಣ ಕಾರ್ಡ್ ನೋಡಲು ಎಡಕ್ಕೆ-ಬಲಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ ಅಥವಾ ನೇರವಾಗಿ ಮೇಲಿನ HD PDF / ಪ್ರಿಂಟ್ ಬಟನ್ ಬಳಸಿ
         </div>
 
         {/* Responsive Mobile-Friendly Scrollable Container */}
@@ -325,7 +341,7 @@ export default function PdfBiodataModal({ isOpen, onClose, profile, isLightMode 
                 <span className="h-[1.5px] w-14 bg-gradient-to-l from-transparent to-[#d4af37]" />
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-cinzel text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#fef8c7] via-[#e5c158] to-[#caa048] mt-1 tracking-wide">
+              <h2 className="text-3xl sm:text-4xl font-extrabold font-cinzel text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#fef8c7] via-[#e5c158] to-[#caa048] mt-1 tracking-wide print:text-[#f3e5ab] print:bg-none">
                 {getFullName()}
               </h2>
             </div>

@@ -104,13 +104,98 @@
   background: #f6e8b1;
 }
 
-/* Print Specific rules for PDF generation */
+/* Print Specific rules for Flawless A4 Matrimonial Biodata Printing */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  @page {
+    size: A4 landscape;
+    margin: 6mm;
   }
-  .no-print {
+
+  html,
+  body {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #071527 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide entire background website and UI elements */
+  #root > div > nav,
+  #root > div > main,
+  #root > div > footer,
+  #root > div > canvas,
+  #root > div > div.fixed.bottom-6.right-6,
+  nav,
+  main,
+  footer,
+  canvas,
+  .no-print,
+  button {
     display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Unconstrain modal overlay so only printable card is visible */
+  .fixed.inset-0 {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .max-w-5xl {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .overflow-x-auto,
+  .overflow-y-auto {
+    overflow: visible !important;
+  }
+
+  /* Perfect A4 Landscape Container */
+  #printable-biodata {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 285mm !important;
+    min-height: 195mm !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 18px 24px !important;
+    box-sizing: border-box !important;
+    background: #071527 !important;
+    border: 2.5px solid #d4af37 !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  #printable-biodata * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Title text fallback for print engines */
+  #printable-biodata h2 {
+    color: #f6e8b1 !important;
+    -webkit-text-fill-color: #f6e8b1 !important;
   }
 }
