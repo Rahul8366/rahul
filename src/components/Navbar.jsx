@@ -18,6 +18,7 @@ export default function Navbar({
   setLanguage,
   isLightMode,
   setIsLightMode,
+  isGuestMode,
   onOpenEditProfile,
   onOpenPdfModal,
   onOpenAdmin,
@@ -222,17 +223,27 @@ export default function Navbar({
             {isLightMode ? <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f6e8b1]" />}
           </button>
 
-          {/* Edit Profile Button (Desktop only, available in mobile drawer) */}
+          {/* Edit Profile Button (Shows Google login prompt if clicked in guest mode) */}
           <button
             onClick={onOpenEditProfile}
-            title="ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ / Edit Details"
+            title={
+              isGuestMode
+                ? 'ಸಂಪಾದಿಸಲು Google ಮೂಲಕ ಮುಂದುವರಿಯಿರಿ • Sign in with Google to Edit'
+                : 'ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ / Edit Details'
+            }
             className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              isGuestMode ? 'opacity-90' : ''
+            } ${
               isLightMode
                 ? 'bg-[#ffffff] hover:bg-[#f8f3e9] border-[#c59b27]/40 text-[#855b0a]'
                 : 'bg-white/5 hover:bg-white/10 border-[#d4af37]/40 text-[#f6e8b1]'
             }`}
           >
-            <Edit3 className="w-3.5 h-3.5 text-[#d4af37]" />
+            {isGuestMode ? (
+              <Lock className="w-3.5 h-3.5 text-[#d4af37]" />
+            ) : (
+              <Edit3 className="w-3.5 h-3.5 text-[#d4af37]" />
+            )}
             <span>
               {language === 'hi' ? 'संपादित करें' : language === 'en' ? 'Edit' : 'ಸಂಪಾದಿಸಿ'}
             </span>
@@ -349,9 +360,14 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onOpenEditProfile();
               }}
-              className="flex-1 py-2.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/50 text-xs font-bold text-[#855b0a] flex items-center justify-center gap-1.5"
+              title={isGuestMode ? "Sign in with Google to Edit" : "Edit Profile"}
+              className="flex-1 py-2.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/50 text-xs font-bold text-[#855b0a] flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Edit3 className="w-4 h-4 text-[#d4af37]" />
+              {isGuestMode ? (
+                <Lock className="w-4 h-4 text-[#d4af37]" />
+              ) : (
+                <Edit3 className="w-4 h-4 text-[#d4af37]" />
+              )}
               <span>{language === 'hi' ? 'संपादित करें' : language === 'en' ? 'Edit' : 'ಸಂಪಾದಿಸಿ'}</span>
             </button>
             <button

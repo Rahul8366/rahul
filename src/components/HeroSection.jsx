@@ -1,11 +1,12 @@
 import React from 'react';
-import { Camera, FileDown, MessageSquare, ChevronDown, Briefcase, MapPin } from 'lucide-react';
+import { Camera, FileDown, MessageSquare, ChevronDown, Briefcase, MapPin, Lock } from 'lucide-react';
 import TiltCard from './TiltCard';
 
 export default function HeroSection({
   profile,
   language,
   isLightMode,
+  isGuestMode,
   onOpenPhotoEditor,
   onOpenPdfModal,
 }) {
@@ -138,9 +139,14 @@ export default function HeroSection({
                   {/* Click-to-Adjust Photo Button */}
                   <button
                     onClick={onOpenPhotoEditor}
+                    title={isGuestMode ? "ಫೋಟೋ ಹೊಂದಿಸಲು Google ಮೂಲಕ ಮುಂದುವರಿಯಿರಿ • Sign in to Adjust Photo" : "ಫೋಟೋ ಹೊಂದಿಸಿ • Adjust Photo"}
                     className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 px-3 py-1 bg-[#061220]/90 hover:bg-[#061220] border border-[#d4af37]/70 rounded-full text-[10px] sm:text-[11px] text-[#f6e8b1] font-semibold flex items-center gap-1.5 shadow-xl backdrop-blur-md transition-all duration-300 cursor-pointer"
                   >
-                    <Camera className="w-3 h-3 text-[#d4af37]" />
+                    {isGuestMode ? (
+                      <Lock className="w-3 h-3 text-[#d4af37]" />
+                    ) : (
+                      <Camera className="w-3 h-3 text-[#d4af37]" />
+                    )}
                     <span>
                       {language === 'hi' ? 'फ़ोटो बदलें' : language === 'en' ? 'Adjust Photo' : 'ಫೋಟೋ ಹೊಂದಿಸಿ'}
                     </span>

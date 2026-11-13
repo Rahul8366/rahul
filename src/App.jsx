@@ -145,6 +145,22 @@ export default function App() {
     setIsPdfModalOpen(true);
   };
 
+  const handleOpenEditProfile = () => {
+    if (isGuestMode) {
+      setIsVisitorGateOpen(true);
+      return;
+    }
+    setIsProfileEditOpen(true);
+  };
+
+  const handleOpenPhotoEditor = () => {
+    if (isGuestMode) {
+      setIsVisitorGateOpen(true);
+      return;
+    }
+    setIsPhotoEditorOpen(true);
+  };
+
   const handleOpenLegal = (tab = 'privacy') => {
     setLegalTab(tab);
     setIsLegalOpen(true);
@@ -238,7 +254,8 @@ export default function App() {
         setLanguage={setLanguage}
         isLightMode={isLightMode}
         setIsLightMode={setIsLightMode}
-        onOpenEditProfile={() => setIsProfileEditOpen(true)}
+        isGuestMode={isGuestMode}
+        onOpenEditProfile={handleOpenEditProfile}
         onOpenPdfModal={handleOpenPdf}
         onOpenAdmin={() => setIsAdminOpen(true)}
         onShare={handleShare}
@@ -250,7 +267,8 @@ export default function App() {
           profile={profile}
           language={language}
           isLightMode={isLightMode}
-          onOpenPhotoEditor={() => setIsPhotoEditorOpen(true)}
+          isGuestMode={isGuestMode}
+          onOpenPhotoEditor={handleOpenPhotoEditor}
           onOpenPdfModal={handleOpenPdf}
         />
 
